@@ -1,0 +1,18 @@
+{
+    "cars": {
+        "6f6bda02-5481-3680-9aab-4dce075a8338": {
+            "make": "Fiat",
+            "model": "Punto"
+        },
+        "37933e13-2736-46c0-533c-5bab5026fff6": {
+            "make": "VW",
+            "model": "Jetta"
+        }
+    },
+    "people": {
+        "1": {
+            "name": "Gosho",
+            "age": 21
+        }
+    }
+}
