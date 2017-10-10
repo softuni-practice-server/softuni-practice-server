@@ -6,7 +6,7 @@ https://docs.google.com/drawings/d/1SOUTqYK47CVph_WfKmjJoZJbjH4sBu7Bm0L4PSy9wUQ/
 
 ## Implementation Roadmap
 ### Stage 1
-#### File Storage - persist data in json files
+#### Memory Storage - persist data in memory, start with seed data
 #### Storage Service - recover data from persistence, keep data in memory, save data in persistence
 #### User Authentication - registration, login, logout
 #### Collection Access - save and retreive data from storage
@@ -14,10 +14,12 @@ https://docs.google.com/drawings/d/1SOUTqYK47CVph_WfKmjJoZJbjH4sBu7Bm0L4PSy9wUQ/
 
 ### Stage 2
 #### App Config - specific collections and property validation, depending on config file, ability to seed and reset storage
-#### Database Storage - persist data in MongoDB instance
+#### File Storage - persist data in json files
+
 
 ### Stage 3
 #### StudentID - unique instance per student
+#### Database Storage - persist data in MongoDB instance
 
 ### Future
 #### Endpoints for individual exercise problems
