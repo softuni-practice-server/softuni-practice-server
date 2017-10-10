@@ -1,1 +1,0 @@
-const storateTests = require('./tests/memoryStorage.test.js');    
