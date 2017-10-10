@@ -6,7 +6,7 @@ https://docs.google.com/drawings/d/1SOUTqYK47CVph_WfKmjJoZJbjH4sBu7Bm0L4PSy9wUQ/
 
 ## Implementation Roadmap
 ### Stage 1
-#### Memory Storage - persist data in memory, start with seed data
+#### Memory Storage - persist data in memory, start with seed data from file
 #### Storage Service - recover data from persistence, keep data in memory, save data in persistence
 #### User Authentication - registration, login, logout
 #### Collection Access - save and retreive data from storage
