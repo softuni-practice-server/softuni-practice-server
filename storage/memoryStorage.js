@@ -1,8 +1,10 @@
+const delay = require('../util/delay');
+
 /**
  * Create storage instance and populate with seed data
  * @param {Object=} seedData Associative array with data. Each property is an object with properties in format {key: value}
  */
-function getInstance(seedData = {}) {
+function createInstance(seedData = {}) {
     const collections = new Map();
 
     // Initialize seed data from file    
@@ -93,7 +95,7 @@ function getInstance(seedData = {}) {
         targetCollection.set(id, data);
     }
 
-    return {get, add, set};
+    return { get: delay(get), add: delay(add), set: delay(set) };
 }
 
 // Utility
@@ -104,4 +106,4 @@ function nextId() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
-module.exports = getInstance;
+module.exports = createInstance;
