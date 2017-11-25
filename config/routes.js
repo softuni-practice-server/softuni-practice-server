@@ -17,7 +17,7 @@ module.exports = (app, endpoints) => {
     // Handshake
     // TODO return version information and directions to request endpoint docs
     app.get('/', (req, res) => {
-        res.json({message: 'API service listenning for request'});
+        res.json({message: 'API service listening for request'});
     });
     
     app.all('*', (req, res) => {
