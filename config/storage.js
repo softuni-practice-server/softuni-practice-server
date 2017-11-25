@@ -2,6 +2,12 @@
 
 const seed = require('./seed.json');
 
-module.exports = () => {
-    return require('../util/serviceLocator').services.storage(seed); 
+module.exports = (config) => {
+    switch (config.storage) {
+        case 'memory':
+            return require('../storage/memoryStorage')(seed);
+        default:
+            // Use memory storage, if not otherwise specified
+            return require('../storage/memoryStorage')(seed);
+    }
 };
