@@ -151,6 +151,37 @@ describe('Memory storage', () => {
                 }
                 expect(threw).to.be.true;
             });
-        })
+        });
+
+        describe('Query', () => {
+            it('works with one property', async () => {
+                const result = await instance.query('cars', {'make': 'Fiat'});
+                expect(result.length).to.equal(1);
+                expect(result[0]._id).to.equal('6f6bda02-5481-3680-9aab-4dce075a8338');
+                expect(result[0].make).to.equal('Fiat');
+                expect(result[0].model).to.equal('Punto');
+            });
+
+            it('is case insensitive', async () => {
+                const result = await instance.query('cars', {'make': 'fiat'});
+                expect(result.length).to.equal(1);
+                expect(result[0]._id).to.equal('6f6bda02-5481-3680-9aab-4dce075a8338');
+                expect(result[0].make).to.equal('Fiat');
+                expect(result[0].model).to.equal('Punto');
+            });
+
+            it('works with two properties', async () => {
+                const result = await instance.query('cars', {'make': 'VW', 'model': 'Jetta'});
+                expect(result.length).to.equal(1);
+                expect(result[0]._id).to.equal('37933e13-2736-46c0-533c-5bab5026fff6');
+                expect(result[0].make).to.equal('VW');
+                expect(result[0].model).to.equal('Jetta');
+            });
+
+            it('returns enpty array when no match', async () => {
+                const result = await instance.query('cars', {'model': 'Corsa'});
+                expect(result.length).to.equal(0);
+            });
+        });
     });
 });

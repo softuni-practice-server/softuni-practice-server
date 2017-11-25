@@ -1,5 +1,7 @@
-const data = require('./form-data');
+const cars = require('./cars');
+const people = require('./people');
 
 module.exports = {
-    data
+    cars,
+    people
 };

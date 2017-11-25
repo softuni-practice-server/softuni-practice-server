@@ -1,5 +1,13 @@
-const storage = require('../storage/memoryStorage');
+const services = {};
 
 module.exports = {
-    storage
-};
+    initialize: config => {
+        switch (config.storage) {
+            case 'memory':
+                services.storage = require('../storage/memoryStorage');
+                break;
+        }
+        return services;
+    },
+    services
+}

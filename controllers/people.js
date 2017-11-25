@@ -8,5 +8,8 @@ module.exports = {
         console.log('Received data:');
         console.log(req.body.data);
         res.end();
-    }
+    },
+    getById: () => {},
+    postById: () => {},
+    deleteById: () => {}
 };

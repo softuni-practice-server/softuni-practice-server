@@ -26,7 +26,8 @@ function createInstance(seedData = {}) {
     /**
      * Get entry by ID or list of all entries from collection or list of all collections
      * @param {string=} collection Name of collection to access. Throws error if not found. If omitted, returns list of all collections.
-     * @param {number|string=} id ID of requested entry. Throws error if not found. If omitted, returns list all entries in collection.
+     * @param {number|string=} id ID of requested entry. Throws error if not found. If omitted, returns of list all entries in collection.
+     * @return {Object} Matching entry.
      */
     function get(collection, id) {
         if (!collection) {
@@ -81,6 +82,7 @@ function createInstance(seedData = {}) {
      * @param {string} collection Name of collection to access. Throws error if not found.
      * @param {number|string} id ID of entry to update. Throws error if not found.
      * @param {Object} data Value to store. Entry will be replaced!
+     * @return {Object} Updated entry.
      */
     function set(collection, id, data) {
         if (!collections.has(collection)) {
@@ -93,9 +95,66 @@ function createInstance(seedData = {}) {
         // Make sure incoming entry has no _id property
         delete data._id;
         targetCollection.set(id, data);
+        data._id = id;
+        return data;
     }
 
-    return { get: delay(get), add: delay(add), set: delay(set) };
+    /**
+     * Delete entry by ID
+     * @param {string} collection Name of collection to access. Throws error if not found.
+     * @param {number|string} id ID of entry to update. Throws error if not found.
+     */
+    function del(collection, id) {
+        if (!collections.has(collection)) {
+            throw new ReferenceError('Collection does not exist: ' + collection);
+        }
+        const targetCollection = collections.get(collection);
+        if (!targetCollection.has(id)) {
+            throw new ReferenceError('Entry does not exist: ' + id);
+        }
+        targetCollection.delete(id);
+    }
+
+    /**
+     * Search in collection by query object
+     * @param {string} collection Name of collection to access. Throws error if not found.
+     * @param {Object} query Query object. Format {prop: value}.
+     * @return {Object[]} Array of matching entries.
+     */
+    function query(collection, query) {
+        if (!collections.has(collection)) {
+            throw new ReferenceError('Collection does not exist: ' + collection);
+        }
+        const targetCollection = collections.get(collection);
+        const result = [];
+        // Iterate values of target collection and compare each property with the given query
+        for (let entry of [...targetCollection.values()]) {
+            let match = true;
+            for (let prop in entry) {
+                if (query.hasOwnProperty(prop)) {
+                    const targetValue = query[prop];
+                    // Perform lowercase search, if value is string
+                    if (typeof targetValue === 'string') {
+                        if (targetValue.toLocaleLowerCase() !== entry[prop].toLocaleLowerCase()) {
+                            match = false;
+                            break;
+                        }
+                    } else if (targetValue !== entry[prop]) {
+                        match = false;
+                        break;
+                    }
+                }
+            }
+
+            if (match) {
+                result.push(entry);
+            }
+        }
+
+        return result;
+    }
+
+    return { get: delay(get), add: delay(add), set: delay(set), delete: delay(del), query: delay(query) };
 }
 
 // Utility
