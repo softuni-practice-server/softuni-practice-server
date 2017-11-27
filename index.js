@@ -1,6 +1,6 @@
 const env = process.env.NODE_ENV || 'development';
 const config = require('./config/config')[env];
-require('./util/serviceLocator').initialize(config);
+require('./util/service-locator').initialize(config);
 
 require('./config/database')(config);
 const storage = require('./config/storage')(config);
