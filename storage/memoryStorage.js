@@ -40,17 +40,16 @@ function createInstance(seedData = {}) {
         if (!id) {
             const entries = [...targetCollection.entries()];
             let result = entries.map(([k, v]) => {
-                v._id = k;
-                return v;
+                return Object.assign({}, v, {_id: k});
             });
+            console.log(collections);
             return result;
         }
         if (!targetCollection.has(id)) {
             throw new ReferenceError('Entry does not exist: ' + id);
         }
         const entry = targetCollection.get(id);
-        entry._id = id;
-        return entry;
+        return Object.assign({}, entry, {_id: id});
     }
 
     /**
@@ -73,8 +72,7 @@ function createInstance(seedData = {}) {
         // Make sure incoming entry has no _id property
         delete data._id;
         targetCollection.set(id, data);
-        data._id = id;
-        return data;
+        return Object.assign({}, data, {_id: id});
     }
 
     /**
@@ -95,8 +93,7 @@ function createInstance(seedData = {}) {
         // Make sure incoming entry has no _id property
         delete data._id;
         targetCollection.set(id, data);
-        data._id = id;
-        return data;
+        return Object.assign({}, data, {_id: id});
     }
 
     /**
@@ -127,8 +124,8 @@ function createInstance(seedData = {}) {
         }
         const targetCollection = collections.get(collection);
         const result = [];
-        // Iterate values of target collection and compare each property with the given query
-        for (let entry of [...targetCollection.values()]) {
+        // Iterate entries of target collection and compare each property with the given query
+        for (let [key, entry] of [...targetCollection.entries()]) {
             let match = true;
             for (let prop in entry) {
                 if (query.hasOwnProperty(prop)) {
@@ -147,7 +144,7 @@ function createInstance(seedData = {}) {
             }
 
             if (match) {
-                result.push(entry);
+                result.push(Object.assign({}, entry, {_id: key}));
             }
         }
 
