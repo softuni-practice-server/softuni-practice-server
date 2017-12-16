@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 
-const storage = require('../storage/memoryStorage');
+const storage = require('../storage/memory-storage');
 
 describe('Memory storage', () => {
     const seedData = {
