@@ -42,7 +42,6 @@ function createInstance(seedData = {}) {
             let result = entries.map(([k, v]) => {
                 return Object.assign({}, v, {_id: k});
             });
-            console.log(collections);
             return result;
         }
         if (!targetCollection.has(id)) {
