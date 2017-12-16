@@ -131,7 +131,7 @@ function createInstance(seedData = {}) {
                 if (query.hasOwnProperty(prop)) {
                     const targetValue = query[prop];
                     // Perform lowercase search, if value is string
-                    if (typeof targetValue === 'string') {
+                    if (typeof targetValue === 'string' && typeof entry[prop] === 'string') {
                         if (targetValue.toLocaleLowerCase() !== entry[prop].toLocaleLowerCase()) {
                             match = false;
                             break;
