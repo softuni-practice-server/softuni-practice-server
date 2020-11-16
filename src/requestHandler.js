@@ -1,7 +1,8 @@
-const controllers = require('./crud');
+const modules = require('./modules');
 
 
 async function handler(req, res) {
+    const method = req.method.toLocaleLowerCase();
     console.info(`Receiving ${req.method} request at ${req.url}`);
 
     let status = 200;
@@ -11,7 +12,7 @@ async function handler(req, res) {
     };
     let result;
 
-    if (req.method == 'OPTIONS') {
+    if (method == 'options') {
         Object.assign(headers, {
             'Access-Control-Allow-Methods': 'POST, GET, PUT, DELETE, OPTIONS',
             'Access-Control-Allow-Credentials': false,
@@ -19,9 +20,14 @@ async function handler(req, res) {
             'Access-Control-Allow-Headers': 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept'
         });
     } else {
-        await decorateRequest(req);
 
-        result = await controllers[req.method.toLocaleLowerCase()](req, res);
+        const { module, tokens, query, body } = await parseRequest(req);
+
+        if (modules.hasOwnProperty(module)) {
+            result = modules[module][method](tokens, query, body);
+        } else {
+            // TODO handle dev console requests
+        }
 
         if (result !== undefined) {
             result = JSON.stringify(result);
@@ -36,16 +42,24 @@ async function handler(req, res) {
     res.end(result);
 }
 
-async function decorateRequest(req) {
+async function parseRequest(req) {
     const url = new URL(req.url, `http://${req.headers.host}`);
-    req.tokens = url.pathname.split('/').filter(x => x.length > 0);
-    req.query = url.search
+    const tokens = url.pathname.split('/').filter(x => x.length > 0);
+    const module = tokens.shift();
+    const query = url.search
         .split('?')
         .slice(1)
         .filter(x => x.length > 0)
         .map(x => x.split('='))
         .reduce((p, [k, v]) => Object.assign(p, { [k]: v }), {});
-    req.body = await parseBody(req);
+    const body = await parseBody(req);
+
+    return {
+        module,
+        tokens,
+        query,
+        body
+    };
 }
 
 function parseBody(req) {

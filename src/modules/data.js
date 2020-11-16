@@ -10,22 +10,21 @@ const data = fs.readdirSync('./data').reduce((p, c) => {
 }, {});
 
 const controllers = {
-    get: (req, res) => {
+    get: (tokens, query, body) => {
         let responseData = data;
-        for (let token of req.tokens) {
+        for (let token of tokens) {
             if (responseData !== undefined) {
                 responseData = responseData[token];
             }
         }
         return responseData;
     },
-    post: (req, res) => {
-        const body = req.body;
+    post: (tokens, query, body) => {
         console.log('Request body:\n', body);
 
         // TODO handle collisions, replacement
         let responseData = data;
-        for (let token of req.tokens) {
+        for (let token of tokens) {
             if (responseData.hasOwnProperty(token) == false) {
                 responseData[token] = {};
             }
@@ -36,12 +35,11 @@ const controllers = {
         responseData[newId] = Object.assign({}, body, { _id: newId });
         return responseData[newId];
     },
-    put: (req, res) => {
-        const body = req.body;
+    put: (tokens, query, body) => {
         console.log('Request body:\n', body);
 
         let responseData = data;
-        for (let token of req.tokens) {
+        for (let token of tokens) {
             if (responseData !== undefined) {
                 responseData = responseData[token];
             }
@@ -51,15 +49,15 @@ const controllers = {
         }
         return responseData;
     },
-    delete: (req, res) => {
+    delete: (tokens, query, body) => {
         let responseData = data;
 
-        for (let i = 0; i < req.tokens.length; i++) {
-            const token = req.tokens[i];
+        for (let i = 0; i < tokens.length; i++) {
+            const token = tokens[i];
             if (responseData.hasOwnProperty(token) == false) {
                 return null;
             }
-            if (i == req.tokens.length - 1) {
+            if (i == tokens.length - 1) {
                 const body = responseData[token];
                 delete responseData[token];
                 return body;
