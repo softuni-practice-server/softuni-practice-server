@@ -9,7 +9,7 @@ const data = fs.readdirSync('./data').reduce((p, c) => {
     return p;
 }, {});
 
-const controllers = {
+const methods = {
     get: (tokens, query, body) => {
         let responseData = data;
         for (let token of tokens) {
@@ -76,4 +76,4 @@ function uuid() {
     });
 }
 
-module.exports = controllers;
+module.exports = methods;

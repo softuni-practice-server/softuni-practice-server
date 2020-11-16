@@ -20,13 +20,18 @@ async function handler(req, res) {
             'Access-Control-Allow-Headers': 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept'
         });
     } else {
+        // TODO handle dev console requests
 
         const { module, tokens, query, body } = await parseRequest(req);
 
-        if (modules.hasOwnProperty(module)) {
-            result = modules[module][method](tokens, query, body);
-        } else {
-            // TODO handle dev console requests
+        try {
+            result = await modules[module][method](tokens, query, body);
+        } catch (err) {
+            // TODO handle credential/authorization/conflict errors
+            console.error(err);
+            status = 400;
+            headers['Content-Type'] = 'text/plain';
+            result = 'Error 400: Bad Request';
         }
 
         if (result !== undefined) {

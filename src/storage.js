@@ -1,5 +1,3 @@
-const delay = require('./delay');
-
 /**
  * Create storage instance and populate with seed data
  * @param {Object=} seedData Associative array with data. Each property is an object with properties in format {key: value}
@@ -40,7 +38,7 @@ function createInstance(seedData = {}) {
         if (!id) {
             const entries = [...targetCollection.entries()];
             let result = entries.map(([k, v]) => {
-                return Object.assign({}, v, {_id: k});
+                return Object.assign({}, v, { _id: k });
             });
             return result;
         }
@@ -48,7 +46,7 @@ function createInstance(seedData = {}) {
             throw new ReferenceError('Entry does not exist: ' + id);
         }
         const entry = targetCollection.get(id);
-        return Object.assign({}, entry, {_id: id});
+        return Object.assign({}, entry, { _id: id });
     }
 
     /**
@@ -63,15 +61,15 @@ function createInstance(seedData = {}) {
             targetCollection = new Map();
             collections.set(collection, targetCollection);
         }
-        let id = nextId();
+        let id = uuid();
         // Make sure new ID does not match existing value
         while (targetCollection.has(id)) {
-            id = nextId();
+            id = uuid();
         }
         // Make sure incoming entry has no _id property
         delete data._id;
         targetCollection.set(id, data);
-        return Object.assign({}, data, {_id: id});
+        return Object.assign({}, data, { _id: id });
     }
 
     /**
@@ -92,7 +90,7 @@ function createInstance(seedData = {}) {
         // Make sure incoming entry has no _id property
         delete data._id;
         targetCollection.set(id, data);
-        return Object.assign({}, data, {_id: id});
+        return Object.assign({}, data, { _id: id });
     }
 
     /**
@@ -143,22 +141,23 @@ function createInstance(seedData = {}) {
             }
 
             if (match) {
-                result.push(Object.assign({}, entry, {_id: key}));
+                result.push(Object.assign({}, entry, { _id: key }));
             }
         }
 
         return result;
     }
 
-    return { get: delay(get), add: delay(add), set: delay(set), delete: delay(del), query: delay(query) };
+    return { get, add, set, delete: del, query };
 }
 
 // Utility
-function nextId() {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+function uuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        let r = Math.random() * 16 | 0,
+            v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
 }
 
 module.exports = createInstance;
