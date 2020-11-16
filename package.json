@@ -19,15 +19,7 @@
     "url": "https://github.com/softuni-practice-server/softuni-practice-server/issues"
   },
   "homepage": "https://github.com/softuni-practice-server/softuni-practice-server#readme",
-  "dependencies": {
-    "body-parser": "1.18.2",
-    "cookie-parser": "1.4.3",
-    "express": "4.16.2",
-    "jsonwebtoken": "8.1.0",
-    "passport": "0.4.0",
-    "passport-local": "1.0.0",
-    "validator": "9.1.2"
-  },
+  "dependencies": {},
   "devDependencies": {
     "chai": "4.1.2"
   }

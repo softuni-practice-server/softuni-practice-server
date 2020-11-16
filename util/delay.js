@@ -14,7 +14,7 @@ function delay(fn) {
                 }
             }, time);
         });
-    }
+    };
 }
 
 module.exports = delay;

@@ -1,4 +1,4 @@
-const delay = require('../util/delay');
+const delay = require('./delay');
 
 /**
  * Create storage instance and populate with seed data
