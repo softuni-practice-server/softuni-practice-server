@@ -1,39 +1,39 @@
 const expect = require('chai').expect;
 
-const storage = require('../storage/memory-storage');
+const storage = require('../src/memory-storage');
 
 describe('Memory storage', () => {
     const seedData = {
-        "cars": {
-            "6f6bda02-5481-3680-9aab-4dce075a8338": {
-                "make": "Fiat",
-                "model": "Punto",
-                "miles": 15649
+        'cars': {
+            '6f6bda02-5481-3680-9aab-4dce075a8338': {
+                'make': 'Fiat',
+                'model': 'Punto',
+                'miles': 15649
             },
-            "37933e13-2736-46c0-533c-5bab5026fff6": {
-                "make": "VW",
-                "model": "Jetta",
-                "miles": 9946
+            '37933e13-2736-46c0-533c-5bab5026fff6': {
+                'make': 'VW',
+                'model': 'Jetta',
+                'miles': 9946
             }, 
-            "3245933e-6456-4e00-5f3c-5bab5026f526": {
-                "make": "VW",
-                "model": "Golf",
-                "miles": 97465
+            '3245933e-6456-4e00-5f3c-5bab5026f526': {
+                'make': 'VW',
+                'model': 'Golf',
+                'miles': 97465
             }
         },
-        "people": {
-            "caddfa33-e1f1-2c3f-837a-42c50ee02ed9": {
-                "name": "Gosho",
-                "age": 21,
-                "youngDriver": true,
+        'people': {
+            'caddfa33-e1f1-2c3f-837a-42c50ee02ed9': {
+                'name': 'Gosho',
+                'age': 21,
+                'youngDriver': true,
             },
-            "666f61c3-2736-46c0-533c-5bab50269797": {
-                "name": "Pesho",
-                "age": 25,
-                "youngDriver": false,
+            '666f61c3-2736-46c0-533c-5bab50269797': {
+                'name': 'Pesho',
+                'age': 25,
+                'youngDriver': false,
             }
         }
-    }
+    };
 
     describe('Initialization', () => {
         it('initializes without error', () => {
