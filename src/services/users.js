@@ -2,6 +2,8 @@ const crypto = require('crypto');
 const registry = require('../storage')({ users: {}, sessions: {} });
 
 
+// TODO: user properties defined in settings file
+
 const methods = {
     get: (tokens, query, body) => {
         if (tokens.length > 1) {

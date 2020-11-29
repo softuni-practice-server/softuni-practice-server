@@ -1,13 +1,12 @@
 {
   "name": "softuni-practice-server",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "https://docs.google.com/drawings/d/1SOUTqYK47CVph_WfKmjJoZJbjH4sBu7Bm0L4PSy9wUQ/edit?usp=sharing",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "test": "mocha tests"
   },
-  "engine": "8",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/softuni-practice-server/softuni-practice-server.git"
