@@ -3,7 +3,7 @@ const { ServiceError } = require('./common/errors');
 
 function createHandler(services) {
     return async function handler(req, res) {
-        const method = req.method.toLocaleLowerCase();
+        const method = req.method;
         console.info(`<< ${req.method} ${req.url}`);
 
         let status = 200;
@@ -13,7 +13,7 @@ function createHandler(services) {
         };
         let result;
 
-        if (method == 'options') {
+        if (method == 'OPTIONS') {
             Object.assign(headers, {
                 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
                 'Access-Control-Allow-Credentials': false,
@@ -21,7 +21,7 @@ function createHandler(services) {
                 'Access-Control-Allow-Headers': 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept'
             });
         } else {
-            // TODO handle dev console requests (via web interface)
+            // TODO: handle dev console requests (via web interface)
 
             const { serviceName, tokens, query, body } = await parseRequest(req);
 
@@ -32,17 +32,17 @@ function createHandler(services) {
                 result = composeErrorObject(400, `Service "${serviceName}" is not supported`);
             } else {
                 try {
-                    result = await service[method](tokens, query, body);
+                    // TODO: process client authentication and other middleware
+                    const context = {};
+
+                    result = await service(context, { method, tokens, query, body });
                 } catch (err) {
                     if (err instanceof ServiceError) {
-                        // TODO: handle credential/authorization/conflict errors
-                        if (err.status !== undefined) {
-                            status = err.status;
-                        } else {
-                            status = 400;
-                        }
+                        status = err.status || 400;
                         result = composeErrorObject(err.code || status, err.message);
                     } else {
+                        // Unhandled exception, this is due to an error in the service code - REST consumers should never have to encounter this;
+                        // If it happens, it must be debugged in a future version of the server
                         console.error(err);
                         status = 500;
                         result = composeErrorObject(500, 'Server Error');
