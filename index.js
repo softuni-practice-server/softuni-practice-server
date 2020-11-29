@@ -1,8 +1,9 @@
 const http = require('http');
-const handler = require('./src/requestHandler');
+const createHandler = require('./src/requestHandler');
+const services = require('./services');
 
 
-const server = http.createServer(handler);
+const server = http.createServer(createHandler(services));
 
 const port = 3000;
 server.listen(port);
