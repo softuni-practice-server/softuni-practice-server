@@ -11,7 +11,7 @@ class Service {
      */
     parseRequest(context, request) {
         for (let {method, name, handler} of this._actions) {
-            if (method === request.method && name === request.tokens[0]) {
+            if (method === request.method && matchAndAssignParams(context, request.tokens[0], name)) {
                 return handler(context, request.tokens.slice(1), request.query, request.body);
             }
         }
@@ -20,7 +20,7 @@ class Service {
     /**
      * Register service action
      * @param {string} method HTTP method
-     * @param {string} name Action name
+     * @param {string} name Action name. Can be a glob pattern.
      * @param {(context, tokens: string[], query: *, body: *)} handler Request handler
      */
     registerAction(method, name, handler) {
@@ -29,7 +29,7 @@ class Service {
 
     /**
      * Register GET action
-     * @param {string} name Action name
+     * @param {string} name Action name. Can be a glob pattern.
      * @param {(context, tokens: string[], query: *, body: *)} handler Request handler
      */
     get(name, handler) {
@@ -38,7 +38,7 @@ class Service {
 
     /**
      * Register POST action
-     * @param {string} name Action name
+     * @param {string} name Action name. Can be a glob pattern.
      * @param {(context, tokens: string[], query: *, body: *)} handler Request handler
      */
     post(name, handler) {
@@ -47,7 +47,7 @@ class Service {
 
     /**
      * Register PUT action
-     * @param {string} name Action name
+     * @param {string} name Action name. Can be a glob pattern.
      * @param {(context, tokens: string[], query: *, body: *)} handler Request handler
      */
     put(name, handler) {
@@ -56,11 +56,24 @@ class Service {
 
     /**
      * Register DELETE action
-     * @param {string} name Action name
+     * @param {string} name Action name. Can be a glob pattern.
      * @param {(context, tokens: string[], query: *, body: *)} handler Request handler
      */
     delete(name, handler) {
         this.registerAction('DELETE', name, handler);
+    }
+}
+
+function matchAndAssignParams(context, name, pattern) {
+    if (pattern == '*') {
+        return true;
+    } else if (pattern[0] == ':') {
+        context.params[pattern.slice(1)] = name;
+        return true;
+    } else if (name == pattern) {
+        return true;
+    } else {
+        return false;
     }
 }
 

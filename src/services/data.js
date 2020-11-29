@@ -1,4 +1,5 @@
 const fs = require('fs');
+const Service = require('./Service');
 
 
 const data = fs.readdirSync('./data').reduce((p, c) => {
@@ -9,8 +10,14 @@ const data = fs.readdirSync('./data').reduce((p, c) => {
     return p;
 }, {});
 
-const methods = {
-    get: (tokens, query, body) => {
+const dataService = new Service();
+dataService.get(':collection', actions.get);
+dataService.post(':collection', actions.post);
+dataService.put(':collection', actions.put);
+dataService.delete(':collection', actions.delete);
+
+const actions = {
+    get: (conext, tokens, query, body) => {
         let responseData = data;
         for (let token of tokens) {
             if (responseData !== undefined) {
@@ -19,7 +26,7 @@ const methods = {
         }
         return responseData;
     },
-    post: (tokens, query, body) => {
+    post: (conext, tokens, query, body) => {
         console.log('Request body:\n', body);
 
         // TODO handle collisions, replacement
@@ -35,7 +42,7 @@ const methods = {
         responseData[newId] = Object.assign({}, body, { _id: newId });
         return responseData[newId];
     },
-    put: (tokens, query, body) => {
+    put: (conext, tokens, query, body) => {
         console.log('Request body:\n', body);
 
         let responseData = data;
@@ -49,7 +56,7 @@ const methods = {
         }
         return responseData;
     },
-    delete: (tokens, query, body) => {
+    delete: (conext, tokens, query, body) => {
         let responseData = data;
 
         for (let i = 0; i < tokens.length; i++) {
@@ -76,4 +83,4 @@ function uuid() {
     });
 }
 
-module.exports = methods;
+module.exports = actions;
