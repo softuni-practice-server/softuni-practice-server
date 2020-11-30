@@ -1,7 +1,7 @@
 const { ServiceError } = require('./common/errors');
 
 
-function createHandler(services) {
+function createHandler(plugins, services) {
     return async function handler(req, res) {
         const method = req.method;
         console.info(`<< ${req.method} ${req.url}`);
@@ -32,8 +32,8 @@ function createHandler(services) {
                 result = composeErrorObject(400, `Service "${serviceName}" is not supported`);
             } else {
                 try {
-                    // TODO: process client authentication and other middleware
                     const context = {};
+                    plugins.forEach(decorate => decorate(context, req)); // Decorate context with plugin functionality
 
                     result = await service(context, { method, tokens, query, body });
                 } catch (err) {
