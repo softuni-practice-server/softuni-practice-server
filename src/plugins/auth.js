@@ -13,12 +13,18 @@ function initPlugin(settings) {
 
         const userToken = request.headers['user-token'];
         if (userToken !== undefined) {
+            let user;
             const session = findSessionByToken(userToken);
             if (session !== undefined) {
                 const userData = context.storage.get('users', session.userId);
                 if (userData !== undefined) {
-                    context.user = userData;
+                    user = userData;
                 }
+            }
+            if (user !== undefined) {
+                context.user = user;
+            } else {
+                throw new CredentialError('Invalid access token');
             }
         }
 
@@ -57,10 +63,10 @@ function initPlugin(settings) {
 
                     return result;
                 } else {
-                    throw new CredentialError('Email or password don\'t match');
+                    throw new CredentialError('Login or password don\'t match');
                 }
             } else {
-                throw new CredentialError('Email or password don\'t match');
+                throw new CredentialError('Login or password don\'t match');
             }
         }
 
