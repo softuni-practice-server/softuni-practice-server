@@ -68,7 +68,7 @@ function initPlugin(settings) {
             if (context.user !== undefined) {
                 const session = findSessionByUserId(context.user._id);
                 if (session !== undefined) {
-                    context.storage.del('sessions', session._id);
+                    context.storage.delete('sessions', session._id);
                 }
             } else {
                 throw new CredentialError('User session does not exist');

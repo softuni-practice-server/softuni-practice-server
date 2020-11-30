@@ -1,3 +1,15 @@
+const { uuid } = require('../common/util');
+
+
+function initPlugin(settings) {
+    const storage = createInstance(settings.seedData);
+
+    return function decoreateContext(context, request) {
+        context.storage = storage;
+    };
+}
+
+
 /**
  * Create storage instance and populate with seed data
  * @param {Object=} seedData Associative array with data. Each property is an object with properties in format {key: value}
@@ -151,13 +163,4 @@ function createInstance(seedData = {}) {
     return { get, add, set, delete: del, query };
 }
 
-// Utility
-function uuid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        let r = Math.random() * 16 | 0,
-            v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-}
-
-module.exports = createInstance;
+module.exports = initPlugin;
