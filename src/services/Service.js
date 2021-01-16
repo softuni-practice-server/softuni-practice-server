@@ -9,10 +9,10 @@ class Service {
      * @param {*} context Execution context, contains result of middleware processing
      * @param {{method: string, tokens: string[], query: *, body: *}} request Request parameters
      */
-    parseRequest(context, request) {
+    async parseRequest(context, request) {
         for (let {method, name, handler} of this._actions) {
             if (method === request.method && matchAndAssignParams(context, request.tokens[0], name)) {
-                return handler(context, request.tokens.slice(1), request.query, request.body);
+                return await handler(context, request.tokens.slice(1), request.query, request.body);
             }
         }
     }

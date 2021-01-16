@@ -1,86 +1,100 @@
-const fs = require('fs');
+/*
+ * This service requires storage and auth plugins
+ */
+
 const Service = require('./Service');
+const { NotFoundError, RequestError, CredentialError } = require('../common/errors');
 
-
-const data = fs.readdirSync('./data').reduce((p, c) => {
-    const content = JSON.parse(fs.readFileSync('./data/' + c));
-    for (let endpoint in content) {
-        p[endpoint] = content[endpoint];
-    }
-    return p;
-}, {});
 
 const dataService = new Service();
-dataService.get(':collection', actions.get);
-dataService.post(':collection', actions.post);
-dataService.put(':collection', actions.put);
-dataService.delete(':collection', actions.delete);
+dataService.get(':collection', get);
+dataService.post(':collection', post);
+dataService.put(':collection', put);
+dataService.delete(':collection', del);
 
-const actions = {
-    get: (conext, tokens, query, body) => {
-        let responseData = data;
-        for (let token of tokens) {
-            if (responseData !== undefined) {
-                responseData = responseData[token];
-            }
-        }
-        return responseData;
-    },
-    post: (conext, tokens, query, body) => {
-        console.log('Request body:\n', body);
-
-        // TODO handle collisions, replacement
-        let responseData = data;
-        for (let token of tokens) {
-            if (responseData.hasOwnProperty(token) == false) {
-                responseData[token] = {};
-            }
-            responseData = responseData[token];
-        }
-
-        const newId = uuid();
-        responseData[newId] = Object.assign({}, body, { _id: newId });
-        return responseData[newId];
-    },
-    put: (conext, tokens, query, body) => {
-        console.log('Request body:\n', body);
-
-        let responseData = data;
-        for (let token of tokens) {
-            if (responseData !== undefined) {
-                responseData = responseData[token];
-            }
-        }
-        if (responseData !== undefined) {
-            Object.assign(responseData, body);
-        }
-        return responseData;
-    },
-    delete: (conext, tokens, query, body) => {
-        let responseData = data;
-
-        for (let i = 0; i < tokens.length; i++) {
-            const token = tokens[i];
-            if (responseData.hasOwnProperty(token) == false) {
-                return null;
-            }
-            if (i == tokens.length - 1) {
-                const body = responseData[token];
-                delete responseData[token];
-                return body;
-            } else {
-                responseData = responseData[token];
-            }
-        }
+function validateRequest(context, tokens, query) {
+    if (context.params.collection == undefined) {
+        throw new RequestError('Please, specify collection name');
     }
-};
-
-function uuid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        let r = Math.random() * 16 | 0,
-            v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
+    if (context.params.collection == 'users' || context.params.collection == 'sessions') {
+        throw new CredentialError();
+    }
+    if (tokens.length > 1) {
+        throw new RequestError();
+    }
+    // TODO validate query params, once implemented
 }
 
-module.exports = actions;
+
+function get(context, tokens, query, body) {
+    validateRequest(context, tokens, query);
+
+    let responseData;
+
+    try {
+        responseData = context.storage.get(context.params.collection, tokens[0]);
+    } catch (err) {
+        throw new NotFoundError();
+    }
+
+    return responseData;
+}
+
+function post(context, tokens, query, body) {
+    /*
+    console.log('Request body:\n', body);
+
+    // TODO handle collisions, replacement
+    let responseData = data;
+    for (let token of tokens) {
+        if (responseData.hasOwnProperty(token) == false) {
+            responseData[token] = {};
+        }
+        responseData = responseData[token];
+    }
+
+    const newId = uuid();
+    responseData[newId] = Object.assign({}, body, { _id: newId });
+    return responseData[newId];
+    */
+}
+
+function put(context, tokens, query, body) {
+    /*
+    console.log('Request body:\n', body);
+
+    let responseData = data;
+    for (let token of tokens) {
+        if (responseData !== undefined) {
+            responseData = responseData[token];
+        }
+    }
+    if (responseData !== undefined) {
+        Object.assign(responseData, body);
+    }
+    return responseData;
+    */
+}
+
+function del(context, tokens, query, body) {
+    /*
+    let responseData = data;
+
+    for (let i = 0; i < tokens.length; i++) {
+        const token = tokens[i];
+        if (responseData.hasOwnProperty(token) == false) {
+            return null;
+        }
+        if (i == tokens.length - 1) {
+            const body = responseData[token];
+            delete responseData[token];
+            return body;
+        } else {
+            responseData = responseData[token];
+        }
+    }
+    */
+}
+
+
+module.exports = dataService.parseRequest;

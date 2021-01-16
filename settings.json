@@ -1,0 +1,13 @@
+{
+    "identity": "email",
+    "seedData": {
+        "users": {},
+        "sessions": {},
+        "articles": {
+            "1": {
+                "title": "first",
+                "content": "lorem ipsum"
+            }
+        }
+    }
+}

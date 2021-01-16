@@ -32,7 +32,7 @@ function createHandler(plugins, services) {
                 result = composeErrorObject(400, `Service "${serviceName}" is not supported`);
             } else {
                 try {
-                    const context = {};
+                    const context = { params: {} };
                     plugins.forEach(decorate => decorate(context, req)); // Decorate context with plugin functionality
 
                     result = await service(context, { method, tokens, query, body });
@@ -93,7 +93,13 @@ function parseBody(req) {
     return new Promise((resolve, reject) => {
         let body = '';
         req.on('data', (chunk) => body += chunk.toString());
-        req.on('end', () => resolve(JSON.parse(body)));
+        req.on('end', () => {
+            try {
+                resolve(JSON.parse(body));
+            } catch (err) {
+                resolve(body);
+            }
+        });
     });
 }
 

@@ -1,3 +1,7 @@
+/*
+ * This service requires storage and auth plugins
+ */
+
 const Service = require('./Service');
 
 
@@ -9,15 +13,15 @@ userService.get('logout', onLogout);
 // TODO: get user details
 
 function onRegister(context, tokens, query, body) {
-    return context.register(body);
+    return context.auth.register(body);
 }
 
 function onLogin(context, tokens, query, body) {
-    return context.login(body);
+    return context.auth.login(body);
 }
 
 function onLogout(context, tokens, query, body) {
-    return context.logout();
+    return context.auth.logout();
 }
 
 module.exports = userService.parseRequest;

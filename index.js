@@ -1,9 +1,17 @@
 const http = require('http');
 const createHandler = require('./src/requestHandler');
-const services = require('./services');
+const services = require('./src/services');
+const createStorage = require('./src/plugins/storage');
+const createAuth = require('./src/plugins/auth');
 
+const settings = require('./settings.json');
 
-const server = http.createServer(createHandler(services));
+const plugins = [
+    createStorage(settings),
+    createAuth(settings)
+];
+
+const server = http.createServer(createHandler(plugins, services));
 
 const port = 3000;
 server.listen(port);

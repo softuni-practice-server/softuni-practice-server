@@ -1,7 +1,9 @@
-const data = require('./data');
+const jsonstore = require('./jsonstore');
 const users = require('./users');
+const data = require('./data');
 
 module.exports = {
-    data,
-    users
+    jsonstore,
+    users,
+    data
 };
