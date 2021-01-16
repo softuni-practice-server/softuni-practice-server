@@ -68,6 +68,8 @@ function createInstance(seedData = {}) {
      * @return {Object} Original value with resulting ID under _id property.
      */
     function add(collection, data) {
+        const record = Object.assign({}, data);
+
         let targetCollection = collections.get(collection);
         if (!targetCollection) {
             targetCollection = new Map();
@@ -79,9 +81,10 @@ function createInstance(seedData = {}) {
             id = uuid();
         }
         // Make sure incoming entry has no _id property
-        delete data._id;
-        targetCollection.set(id, data);
-        return Object.assign({}, data, { _id: id });
+        delete record._id;
+        record._createdOn = Date.now();
+        targetCollection.set(id, record);
+        return Object.assign({}, record, { _id: id });
     }
 
     /**
@@ -99,10 +102,13 @@ function createInstance(seedData = {}) {
         if (!targetCollection.has(id)) {
             throw new ReferenceError('Entry does not exist: ' + id);
         }
+        const record = Object.assign({}, data);
+        
         // Make sure incoming entry has no _id property
-        delete data._id;
-        targetCollection.set(id, data);
-        return Object.assign({}, data, { _id: id });
+        delete record._id;
+        record._updatedOn = Date.now();
+        targetCollection.set(id, record);
+        return Object.assign({}, record, { _id: id });
     }
 
     /**
