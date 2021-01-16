@@ -3,7 +3,7 @@
  */
 
 const Service = require('./Service');
-const { NotFoundError, RequestError, CredentialError } = require('../common/errors');
+const { NotFoundError, RequestError, CredentialError, AuthorizationError } = require('../common/errors');
 
 
 const dataService = new Service();
@@ -41,59 +41,96 @@ function get(context, tokens, query, body) {
 }
 
 function post(context, tokens, query, body) {
-    /*
     console.log('Request body:\n', body);
 
-    // TODO handle collisions, replacement
-    let responseData = data;
-    for (let token of tokens) {
-        if (responseData.hasOwnProperty(token) == false) {
-            responseData[token] = {};
-        }
-        responseData = responseData[token];
+    validateRequest(context, tokens, query);
+    if (tokens.length > 0) {
+        throw new RequestError('Use PUT to update records');
     }
 
-    const newId = uuid();
-    responseData[newId] = Object.assign({}, body, { _id: newId });
-    return responseData[newId];
-    */
+    let responseData;
+
+    if (context.user) {
+        body._ownerId = context.user._id;
+    } else {
+        throw new AuthorizationError();
+    }
+
+    try {
+        responseData = context.storage.add(context.params.collection, body);
+    } catch (err) {
+        throw new RequestError();
+    }
+
+    return responseData;
 }
 
 function put(context, tokens, query, body) {
-    /*
     console.log('Request body:\n', body);
 
-    let responseData = data;
-    for (let token of tokens) {
-        if (responseData !== undefined) {
-            responseData = responseData[token];
-        }
+    validateRequest(context, tokens, query);
+    if (tokens.length != 1) {
+        throw new RequestError('Missing entry ID');
     }
-    if (responseData !== undefined) {
-        Object.assign(responseData, body);
+
+    let responseData;
+
+    if (!context.user) {
+        throw new AuthorizationError();
     }
+
+    let existing;
+
+    try {
+        existing = context.storage.get(context.params.collection, tokens[0]);
+    } catch (err) {
+        throw new NotFoundError();
+    }
+
+    if (context.user._id !== existing._ownerId) {
+        throw new CredentialError();
+    }
+
+    try {
+        responseData = context.storage.set(context.params.collection, tokens[0], body);
+    } catch (err) {
+        throw new RequestError();
+    }
+
     return responseData;
-    */
 }
 
 function del(context, tokens, query, body) {
-    /*
-    let responseData = data;
-
-    for (let i = 0; i < tokens.length; i++) {
-        const token = tokens[i];
-        if (responseData.hasOwnProperty(token) == false) {
-            return null;
-        }
-        if (i == tokens.length - 1) {
-            const body = responseData[token];
-            delete responseData[token];
-            return body;
-        } else {
-            responseData = responseData[token];
-        }
+    validateRequest(context, tokens, query);
+    if (tokens.length != 1) {
+        throw new RequestError('Missing entry ID');
     }
-    */
+
+    let responseData;
+
+    if (!context.user) {
+        throw new AuthorizationError();
+    }
+
+    let existing;
+
+    try {
+        existing = context.storage.get(context.params.collection, tokens[0]);
+    } catch (err) {
+        throw new NotFoundError();
+    }
+
+    if (context.user._id !== existing._ownerId) {
+        throw new CredentialError();
+    }
+
+    try {
+        responseData = context.storage.delete(context.params.collection, tokens[0]);
+    } catch (err) {
+        throw new RequestError();
+    }
+
+    return responseData;
 }
 
 

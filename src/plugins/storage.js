@@ -50,7 +50,7 @@ function createInstance(seedData = {}) {
         if (!id) {
             const entries = [...targetCollection.entries()];
             let result = entries.map(([k, v]) => {
-                return Object.assign({}, v, { _id: k });
+                return Object.assign(deepCopy(v), { _id: k });
             });
             return result;
         }
@@ -58,7 +58,7 @@ function createInstance(seedData = {}) {
             throw new ReferenceError('Entry does not exist: ' + id);
         }
         const entry = targetCollection.get(id);
-        return Object.assign({}, entry, { _id: id });
+        return Object.assign(deepCopy(entry), { _id: id });
     }
 
     /**
@@ -68,7 +68,7 @@ function createInstance(seedData = {}) {
      * @return {Object} Original value with resulting ID under _id property.
      */
     function add(collection, data) {
-        const record = Object.assign({}, data);
+        const record = assignClean({ _ownerId: data._ownerId }, data);
 
         let targetCollection = collections.get(collection);
         if (!targetCollection) {
@@ -80,18 +80,17 @@ function createInstance(seedData = {}) {
         while (targetCollection.has(id)) {
             id = uuid();
         }
-        // Make sure incoming entry has no _id property
-        delete record._id;
+
         record._createdOn = Date.now();
         targetCollection.set(id, record);
-        return Object.assign({}, record, { _id: id });
+        return Object.assign(deepCopy(record), { _id: id });
     }
 
     /**
      * Update entry by ID
      * @param {string} collection Name of collection to access. Throws error if not found.
      * @param {number|string} id ID of entry to update. Throws error if not found.
-     * @param {Object} data Value to store. Entry will be replaced!
+     * @param {Object} data Value to store. Shallow merge will be performed!
      * @return {Object} Updated entry.
      */
     function set(collection, id, data) {
@@ -102,19 +101,19 @@ function createInstance(seedData = {}) {
         if (!targetCollection.has(id)) {
             throw new ReferenceError('Entry does not exist: ' + id);
         }
-        const record = Object.assign({}, data);
-        
-        // Make sure incoming entry has no _id property
-        delete record._id;
+
+        const existing = deepCopy(targetCollection.get(id));
+        const record = assignClean(existing, data);
         record._updatedOn = Date.now();
         targetCollection.set(id, record);
-        return Object.assign({}, record, { _id: id });
+        return Object.assign(deepCopy(record), { _id: id });
     }
 
     /**
      * Delete entry by ID
      * @param {string} collection Name of collection to access. Throws error if not found.
      * @param {number|string} id ID of entry to update. Throws error if not found.
+     * @return {{_deletedOn: number}} Server time of deletion.
      */
     function del(collection, id) {
         if (!collections.has(collection)) {
@@ -125,6 +124,8 @@ function createInstance(seedData = {}) {
             throw new ReferenceError('Entry does not exist: ' + id);
         }
         targetCollection.delete(id);
+
+        return { _deletedOn: Date.now() };
     }
 
     /**
@@ -159,7 +160,7 @@ function createInstance(seedData = {}) {
             }
 
             if (match) {
-                result.push(Object.assign({}, entry, { _id: key }));
+                result.push(Object.assign(deepCopy(entry), { _id: key }));
             }
         }
 
@@ -167,6 +168,36 @@ function createInstance(seedData = {}) {
     }
 
     return { get, add, set, delete: del, query };
+}
+
+
+function assignClean(target, entry, ...rest) {
+    const blacklist = [
+        '_id',
+        '_createdOn',
+        '_updatedOn',
+        '_ownerId'
+    ];
+    for (let key in entry) {
+        if (blacklist.includes(key) == false) {
+            target[key] = deepCopy(entry[key]);
+        }
+    }
+    if (rest.length > 0) {
+        Object.assign(target, ...rest);
+    }
+
+    return target;
+}
+
+function deepCopy(value) {
+    if (Array.isArray(value)) {
+        return value.map(deepCopy);
+    } else if (typeof value == 'object') {
+        return [...Object.entries(value)].reduce((p, [k, v]) => Object.assign(p, { [k]: deepCopy(v) }), {});
+    } else {
+        return value;
+    }
 }
 
 module.exports = initPlugin;
