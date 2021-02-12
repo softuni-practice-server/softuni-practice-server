@@ -11,7 +11,7 @@ function initPlugin(settings) {
             logout
         };
 
-        const userToken = request.headers['user-token'];
+        const userToken = request.headers['X-Authorization'];
         if (userToken !== undefined) {
             let user;
             const session = findSessionByToken(userToken);
