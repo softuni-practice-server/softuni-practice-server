@@ -4,26 +4,22 @@
         "users": {
             "35c62d76-8152-4626-8712-eeb96381bea8": {
                 "email": "peter@abv.bg",
-                "hashedPassword": "83313014ed3e2391aa1332615d2f053cf5c1bfe05ca1cbcb5582443822df6eb1",
-                "_id": "35c62d76-8152-4626-8712-eeb96381bea8"
+                "hashedPassword": "83313014ed3e2391aa1332615d2f053cf5c1bfe05ca1cbcb5582443822df6eb1"
             },
             "847ec027-f659-4086-8032-5173e2f9c93a": {
                 "email": "george@abv.bg",
-                "hashedPassword": "83313014ed3e2391aa1332615d2f053cf5c1bfe05ca1cbcb5582443822df6eb1",
-                "_id": "847ec027-f659-4086-8032-5173e2f9c93a"
+                "hashedPassword": "83313014ed3e2391aa1332615d2f053cf5c1bfe05ca1cbcb5582443822df6eb1"
             },
             "60f0cf0b-34b0-4abd-9769-8c42f830dffc": {
                 "email": "admin@abv.bg",
-                "hashedPassword": "fac7060c3e17e6f151f247eacb2cd5ae80b8c36aedb8764e18a41bbdc16aa302",
-                "_id": "60f0cf0b-34b0-4abd-9769-8c42f830dffc"
+                "hashedPassword": "fac7060c3e17e6f151f247eacb2cd5ae80b8c36aedb8764e18a41bbdc16aa302"
             }
         },
         "sessions": {}
     },
     "seedData": {
         "recipes": {
-            "01": {
-                "_id": "01",
+            "i01": {
                 "name": "Recipe 1",
                 "img": "assets/lasagna.jpg",
                 "steps": [
@@ -38,8 +34,7 @@
                     "25 g Ingredient 4"
                 ]
             },
-            "02": {
-                "_id": "02",
+            "i02": {
                 "name": "Recipe 2",
                 "img": "assets/roast.jpg",
                 "steps": [
@@ -53,8 +48,7 @@
                     "2 cups Ingredient 3"
                 ]
             },
-            "03": {
-                "_id": "03",
+            "i03": {
                 "name": "Recipe 3",
                 "img": "assets/fish.jpg",
                 "steps": [
@@ -69,6 +63,38 @@
                     "750 g  Ingredient 4",
                     "25 g Ingredient 5"
                 ]
+            }
+        },
+        "records": {
+            "i01": {
+                "name": "John1"
+            },
+            "i02": {
+                "name": "John2"
+            },
+            "i03": {
+                "name": "John3"
+            },
+            "i04": {
+                "name": "John4"
+            },
+            "i05": {
+                "name": "John5"
+            },
+            "i06": {
+                "name": "John6"
+            },
+            "i07": {
+                "name": "John7"
+            },
+            "i08": {
+                "name": "John8"
+            },
+            "i09": {
+                "name": "John9"
+            },
+            "i10": {
+                "name": "John10"
             }
         }
     }
