@@ -73,10 +73,10 @@ async function parseRequest(req) {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const tokens = url.pathname.split('/').filter(x => x.length > 0);
     const serviceName = tokens.shift();
-    const query = url.search
-        .split('?')
-        .slice(1)
-        .filter(x => x.length > 0)
+    const queryString = decodeURIComponent(url.search.split('?')[1] || '');
+    const query = queryString
+        .split('&')
+        .filter(s => s != '')
         .map(x => x.split('='))
         .reduce((p, [k, v]) => Object.assign(p, { [k]: v }), {});
     const body = await parseBody(req);
