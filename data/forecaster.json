@@ -1,0 +1,104 @@
+{
+    "locations": [
+        {
+            "code": "ny",
+            "name": "New York"
+        },
+        {
+            "code": "london",
+            "name": "London"
+        },
+        {
+            "code": "barcelona",
+            "name": "Barcelona"
+        }
+    ],
+    "today": {
+        "barcelona": {
+            "forecast": {
+                "condition": "Sunny",
+                "high": "19",
+                "low": "11"
+            },
+            "name": "Barcelona, Spain"
+        },
+        "london": {
+            "forecast": {
+                "condition": "Rain",
+                "high": "8",
+                "low": "2"
+            },
+            "name": "London, UK"
+        },
+        "ny": {
+            "forecast": {
+                "condition": "Sunny",
+                "high": "19",
+                "low": "8"
+            },
+            "name": "New York, USA"
+        }
+    },
+    "upcoming": {
+        "barcelona": {
+            "forecast": [
+                {
+                    "condition": "Partly sunny",
+                    "high": "15",
+                    "low": "10"
+                },
+                {
+                    "condition": "Overcast",
+                    "high": "17",
+                    "low": "12"
+                },
+                {
+                    "condition": "Rain",
+                    "high": "17",
+                    "low": "12"
+                }
+            ],
+            "name": "Barcelona"
+        },
+        "london": {
+            "forecast": [
+                {
+                    "condition": "Rain",
+                    "high": "8",
+                    "low": "6"
+                },
+                {
+                    "condition": "Rain",
+                    "high": "11",
+                    "low": "3"
+                },
+                {
+                    "condition": "Rain",
+                    "high": "8",
+                    "low": "5"
+                }
+            ],
+            "name": "London"
+        },
+        "ny": {
+            "forecast": [
+                {
+                    "condition": "Partly sunny",
+                    "high": "17",
+                    "low": "6"
+                },
+                {
+                    "condition": "Overcast",
+                    "high": "9",
+                    "low": "3"
+                },
+                {
+                    "condition": "Overcast",
+                    "high": "7",
+                    "low": "3"
+                }
+            ],
+            "name": "New York"
+        }
+    }
+}
