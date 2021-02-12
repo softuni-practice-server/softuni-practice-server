@@ -67,34 +67,44 @@
         },
         "records": {
             "i01": {
-                "name": "John1"
+                "name": "John1",
+                "val": 1
             },
             "i02": {
-                "name": "John2"
+                "name": "John2",
+                "val": 1
             },
             "i03": {
-                "name": "John3"
+                "name": "John3",
+                "val": 2
             },
             "i04": {
-                "name": "John4"
+                "name": "John4",
+                "val": 2
             },
             "i05": {
-                "name": "John5"
+                "name": "John5",
+                "val": 2
             },
             "i06": {
-                "name": "John6"
+                "name": "John6",
+                "val": 3
             },
             "i07": {
-                "name": "John7"
+                "name": "John7",
+                "val": 3
             },
             "i08": {
-                "name": "John8"
+                "name": "John8",
+                "val": 2
             },
             "i09": {
-                "name": "John9"
+                "name": "John9",
+                "val": 3
             },
             "i10": {
-                "name": "John10"
+                "name": "John10",
+                "val": 1
             }
         }
     }

@@ -26,10 +26,25 @@ function validateRequest(context, tokens, query) {
 function get(context, tokens, query, body) {
     validateRequest(context, tokens, query);
 
+    console.log(query);
+
     let responseData;
 
     try {
-        responseData = context.storage.get(context.params.collection, tokens[0]);
+        if (query.where) {
+            const [prop, value] = query.where.split('=');
+            responseData = context.storage.query(context.params.collection, { [prop]: JSON.parse(value) });
+        } else {
+            responseData = context.storage.get(context.params.collection, tokens[0]);
+        }
+
+        if (query.offset) {
+            responseData = responseData.slice(Number(query.offset) || 0);
+        }
+        const pageSize = Number(query.pageSize) || 10;
+        if (query.pageSize) {
+            responseData = responseData.slice(0, pageSize);
+        }
     } catch (err) {
         throw new NotFoundError();
     }

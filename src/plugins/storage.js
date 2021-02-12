@@ -154,7 +154,7 @@ function createInstance(seedData = {}) {
                             match = false;
                             break;
                         }
-                    } else if (targetValue !== entry[prop]) {
+                    } else if (targetValue != entry[prop]) {
                         match = false;
                         break;
                     }
