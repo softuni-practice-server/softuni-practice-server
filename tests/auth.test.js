@@ -39,7 +39,7 @@ describe('Authentication plugin', () => {
         describe('Header parsing', () => {
             it('finds user by token', () => {
                 const mockUser = { _id: '0001' };
-                request.headers['user-token'] = 'AAAA';
+                request.headers['x-authorization'] = 'AAAA';
                 context.storage.query = fnSpy((_, query) => {
                     expect(query.accessToken).to.equal('AAAA');
                     return [{ userId: '0001' }];
@@ -57,7 +57,7 @@ describe('Authentication plugin', () => {
             });
 
             it('throws on missing session (bad token)', () => {
-                request.headers['user-token'] = 'AAAA';
+                request.headers['x-authorization'] = 'AAAA';
                 context.storage.query = fnSpy.returns([]);
 
                 expect(() => decorator(context, request)).to.throw('Invalid access token');
@@ -65,7 +65,7 @@ describe('Authentication plugin', () => {
             });
 
             it('throws on missing user (bad session)', () => {
-                request.headers['user-token'] = 'AAAA';
+                request.headers['x-authorization'] = 'AAAA';
                 context.storage.query = fnSpy.returns([]);
 
                 expect(() => decorator(context, request)).to.throw('Invalid access token');
