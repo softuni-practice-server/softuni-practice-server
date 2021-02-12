@@ -25,7 +25,7 @@ describe('Authentication plugin', () => {
 
         beforeEach(() => {
             context = {
-                storage: {
+                protectedStorage: {
                     get: fnSpy(),
                     add: fnSpy(),
                     set: fnSpy(),
@@ -40,11 +40,11 @@ describe('Authentication plugin', () => {
             it('finds user by token', () => {
                 const mockUser = { _id: '0001' };
                 request.headers['x-authorization'] = 'AAAA';
-                context.storage.query = fnSpy((_, query) => {
+                context.protectedStorage.query = fnSpy((_, query) => {
                     expect(query.accessToken).to.equal('AAAA');
                     return [{ userId: '0001' }];
                 });
-                context.storage.get = fnSpy((_, id) => {
+                context.protectedStorage.get = fnSpy((_, id) => {
                     expect(id).to.equal('0001');
                     return mockUser;
                 });
@@ -52,13 +52,13 @@ describe('Authentication plugin', () => {
                 decorator(context, request);
 
                 expect(context.user).to.equal(mockUser);
-                expect(context.storage.query.called).to.be.true;
-                expect(context.storage.get.called).to.be.true;
+                expect(context.protectedStorage.query.called).to.be.true;
+                expect(context.protectedStorage.get.called).to.be.true;
             });
 
             it('throws on missing session (bad token)', () => {
                 request.headers['x-authorization'] = 'AAAA';
-                context.storage.query = fnSpy.returns([]);
+                context.protectedStorage.query = fnSpy.returns([]);
 
                 expect(() => decorator(context, request)).to.throw('Invalid access token');
                 expect(context.user).to.be.undefined;
@@ -66,7 +66,7 @@ describe('Authentication plugin', () => {
 
             it('throws on missing user (bad session)', () => {
                 request.headers['x-authorization'] = 'AAAA';
-                context.storage.query = fnSpy.returns([]);
+                context.protectedStorage.query = fnSpy.returns([]);
 
                 expect(() => decorator(context, request)).to.throw('Invalid access token');
                 expect(context.user).to.be.undefined;
@@ -78,11 +78,11 @@ describe('Authentication plugin', () => {
 
             describe('Happy path', () => {
                 beforeEach(() => {
-                    context.storage.query = fnSpy((_, query) => {
+                    context.protectedStorage.query = fnSpy((_, query) => {
                         expect(query.email).to.equal('a@a.a');
                         return [];
                     });
-                    context.storage.add = fnSpy((collection, data) => {
+                    context.protectedStorage.add = fnSpy((collection, data) => {
                         switch (collection) {
                             case 'users':
                                 expect(data.email).to.equal('a@a.a');
@@ -92,7 +92,7 @@ describe('Authentication plugin', () => {
                                 return Object.assign(data, { _id: '0002' });
                         }
                     });
-                    context.storage.set = fnSpy((_, id, session) => {
+                    context.protectedStorage.set = fnSpy((_, id, session) => {
                         expect(id).to.equal('0002');
                         return Object.assign(session);
                     });
@@ -103,9 +103,9 @@ describe('Authentication plugin', () => {
 
                     context.auth.register({ email: 'a@a.a', password: '123456' });
 
-                    expect(context.storage.query.called).to.be.true;
-                    expect(context.storage.add.called).to.be.true;
-                    expect(context.storage.set.called).to.be.true;
+                    expect(context.protectedStorage.query.called).to.be.true;
+                    expect(context.protectedStorage.add.called).to.be.true;
+                    expect(context.protectedStorage.set.called).to.be.true;
                 });
 
                 it('returns token and omits hashed password upon success', () => {
@@ -116,9 +116,9 @@ describe('Authentication plugin', () => {
                     expect(result.accessToken).to.not.be.undefined;
                     expect(result.hashedPassword).to.be.undefined;
 
-                    expect(context.storage.query.called).to.be.true;
-                    expect(context.storage.add.called).to.be.true;
-                    expect(context.storage.set.called).to.be.true;
+                    expect(context.protectedStorage.query.called).to.be.true;
+                    expect(context.protectedStorage.add.called).to.be.true;
+                    expect(context.protectedStorage.set.called).to.be.true;
                 });
             });
 
@@ -134,12 +134,12 @@ describe('Authentication plugin', () => {
                 });
 
                 it('throws on existing identity', () => {
-                    context.storage.query = fnSpy.returns([{ _id: '0001', email: 'a@a.a' }]);
+                    context.protectedStorage.query = fnSpy.returns([{ _id: '0001', email: 'a@a.a' }]);
 
                     decorator(context, request);
 
                     expect(() => context.auth.register({ email: 'a@a.a', password: '123456' })).to.throw('A user with the same email already exists');
-                    expect(context.storage.query.called).to.be.true;
+                    expect(context.protectedStorage.query.called).to.be.true;
                 });
             });
 
@@ -149,15 +149,15 @@ describe('Authentication plugin', () => {
 
             describe('Happy path', () => {
                 beforeEach(() => {
-                    context.storage.query = fnSpy((_, query) => {
+                    context.protectedStorage.query = fnSpy((_, query) => {
                         expect(query.email).to.equal('a@a.a');
                         return [{ _id: '0001', email: 'a@a.a', hashedPassword: '83313014ed3e2391aa1332615d2f053cf5c1bfe05ca1cbcb5582443822df6eb1' }];
                     });
-                    context.storage.add = fnSpy((_, session) => {
+                    context.protectedStorage.add = fnSpy((_, session) => {
                         expect(session.userId).to.equal('0001');
                         return Object.assign(session, { _id: '0002' });
                     });
-                    context.storage.set = fnSpy((_, id, session) => {
+                    context.protectedStorage.set = fnSpy((_, id, session) => {
                         expect(id).to.equal('0002');
                         return Object.assign(session);
                     });
@@ -168,9 +168,9 @@ describe('Authentication plugin', () => {
 
                     context.auth.login({ email: 'a@a.a', password: '123456' });
 
-                    expect(context.storage.query.called).to.be.true;
-                    expect(context.storage.add.called).to.be.true;
-                    expect(context.storage.set.called).to.be.true;
+                    expect(context.protectedStorage.query.called).to.be.true;
+                    expect(context.protectedStorage.add.called).to.be.true;
+                    expect(context.protectedStorage.set.called).to.be.true;
                 });
 
                 it('returns token and omits hashed password upon success', () => {
@@ -181,22 +181,22 @@ describe('Authentication plugin', () => {
                     expect(result.accessToken).to.not.be.undefined;
                     expect(result.hashedPassword).to.be.undefined;
 
-                    expect(context.storage.query.called).to.be.true;
-                    expect(context.storage.add.called).to.be.true;
-                    expect(context.storage.set.called).to.be.true;
+                    expect(context.protectedStorage.query.called).to.be.true;
+                    expect(context.protectedStorage.add.called).to.be.true;
+                    expect(context.protectedStorage.set.called).to.be.true;
                 });
             });
 
             describe('Error checking', () => {
                 it('throws on wrong identity', () => {
-                    context.storage.query = fnSpy.returns([]);
+                    context.protectedStorage.query = fnSpy.returns([]);
 
                     decorator(context, request);
                     expect(() => context.auth.login({ email: 'a@a.a', password: '123456' })).to.throw('Login or password don\'t match');
                 });
 
                 it('throws on wrong password', () => {
-                    context.storage.query = fnSpy.returns([{
+                    context.protectedStorage.query = fnSpy.returns([{
                         _id: '0001',
                         email: 'a@a.a',
                         hashedPassword: '83313014ed3e2391aa1332615d2f053cf5c1bfe05ca1cbcb5582443822df6eb1'
@@ -212,8 +212,8 @@ describe('Authentication plugin', () => {
         describe('Logout', () => {
             it('logs out user and deletes session', () => {
                 context.user = { _id: '0001' };
-                context.storage.query = fnSpy.returns([{ _id: 'AAAA' }]);
-                context.storage.delete = fnSpy((_, id) => {
+                context.protectedStorage.query = fnSpy.returns([{ _id: 'AAAA' }]);
+                context.protectedStorage.delete = fnSpy((_, id) => {
                     expect(id).to.equal('AAAA');
                 });
 
@@ -221,8 +221,8 @@ describe('Authentication plugin', () => {
 
                 context.auth.logout();
 
-                expect(context.storage.query.called).to.be.true;
-                expect(context.storage.delete.called).to.be.true;
+                expect(context.protectedStorage.query.called).to.be.true;
+                expect(context.protectedStorage.delete.called).to.be.true;
             });
 
             it('throws on unauthenticated attempt', () => {
@@ -239,7 +239,7 @@ describe('Authentication plugin', () => {
 
         beforeEach(() => {
             context = {
-                storage: {
+                protectedStorage: {
                     get: fnSpy(),
                     add: fnSpy(),
                     set: fnSpy(),
@@ -251,11 +251,11 @@ describe('Authentication plugin', () => {
         });
 
         it('register works with username', () => {
-            context.storage.query = fnSpy((_, query) => {
+            context.protectedStorage.query = fnSpy((_, query) => {
                 expect(query.username).to.equal('aaa');
                 return [];
             });
-            context.storage.add = fnSpy((collection, data) => {
+            context.protectedStorage.add = fnSpy((collection, data) => {
                 switch (collection) {
                     case 'users':
                         expect(data.username).to.equal('aaa');
@@ -265,7 +265,7 @@ describe('Authentication plugin', () => {
                         return Object.assign(data, { _id: '0002' });
                 }
             });
-            context.storage.set = fnSpy((_, id, session) => {
+            context.protectedStorage.set = fnSpy((_, id, session) => {
                 expect(id).to.equal('0002');
                 return Object.assign(session);
             });
@@ -274,21 +274,21 @@ describe('Authentication plugin', () => {
 
             context.auth.register({ username: 'aaa', password: '123456' });
 
-            expect(context.storage.query.called).to.be.true;
-            expect(context.storage.add.called).to.be.true;
-            expect(context.storage.set.called).to.be.true;
+            expect(context.protectedStorage.query.called).to.be.true;
+            expect(context.protectedStorage.add.called).to.be.true;
+            expect(context.protectedStorage.set.called).to.be.true;
         });
 
         it('login works with username', () => {
-            context.storage.query = fnSpy((_, query) => {
+            context.protectedStorage.query = fnSpy((_, query) => {
                 expect(query.username).to.equal('aaa');
                 return [{ _id: '0001', username: 'aaa', hashedPassword: '83313014ed3e2391aa1332615d2f053cf5c1bfe05ca1cbcb5582443822df6eb1' }];
             });
-            context.storage.add = fnSpy((_, session) => {
+            context.protectedStorage.add = fnSpy((_, session) => {
                 expect(session.userId).to.equal('0001');
                 return Object.assign(session, { _id: '0002' });
             });
-            context.storage.set = fnSpy((_, id, session) => {
+            context.protectedStorage.set = fnSpy((_, id, session) => {
                 expect(id).to.equal('0002');
                 return Object.assign(session);
             });
@@ -297,9 +297,9 @@ describe('Authentication plugin', () => {
 
             context.auth.login({ username: 'aaa', password: '123456' });
 
-            expect(context.storage.query.called).to.be.true;
-            expect(context.storage.add.called).to.be.true;
-            expect(context.storage.set.called).to.be.true;
+            expect(context.protectedStorage.query.called).to.be.true;
+            expect(context.protectedStorage.add.called).to.be.true;
+            expect(context.protectedStorage.set.called).to.be.true;
         });
     });
 

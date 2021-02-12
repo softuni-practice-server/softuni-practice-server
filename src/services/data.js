@@ -16,9 +16,6 @@ function validateRequest(context, tokens, query) {
     if (context.params.collection == undefined) {
         throw new RequestError('Please, specify collection name');
     }
-    if (context.params.collection == 'users' || context.params.collection == 'sessions') {
-        throw new CredentialError();
-    }
     if (tokens.length > 1) {
         throw new RequestError();
     }

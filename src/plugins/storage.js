@@ -3,9 +3,11 @@ const { uuid } = require('../common/util');
 
 function initPlugin(settings) {
     const storage = createInstance(settings.seedData);
+    const protectedStorage = createInstance(settings.protectedData);
 
     return function decoreateContext(context, request) {
         context.storage = storage;
+        context.protectedStorage = protectedStorage;
     };
 }
 

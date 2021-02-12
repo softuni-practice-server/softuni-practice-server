@@ -16,7 +16,7 @@ function initPlugin(settings) {
             let user;
             const session = findSessionByToken(userToken);
             if (session !== undefined) {
-                const userData = context.storage.get('users', session.userId);
+                const userData = context.protectedStorage.get('users', session.userId);
                 if (userData !== undefined) {
                     console.log('Authorized as ' + userData[identity]);
                     user = userData;
@@ -35,14 +35,14 @@ function initPlugin(settings) {
                 body[identity].length == 0 ||
                 body.password.length == 0) {
                 throw new RequestError('Missing fields');
-            } else if (context.storage.query('users', { [identity]: body[identity] }).length !== 0) {
+            } else if (context.protectedStorage.query('users', { [identity]: body[identity] }).length !== 0) {
                 throw new ConflictError(`A user with the same ${identity} already exists`);
             } else {
                 const newUser = {
                     [identity]: body[identity],
                     hashedPassword: hash(body.password)
                 };
-                const result = context.storage.add('users', newUser);
+                const result = context.protectedStorage.add('users', newUser);
                 delete result.hashedPassword;
 
                 const session = saveSession(result._id);
@@ -53,7 +53,7 @@ function initPlugin(settings) {
         }
 
         function login(body) {
-            const targetUser = context.storage.query('users', { [identity]: body[identity] });
+            const targetUser = context.protectedStorage.query('users', { [identity]: body[identity] });
             if (targetUser.length == 1) {
                 if (hash(body.password) === targetUser[0].hashedPassword) {
                     const result = targetUser[0];
@@ -75,7 +75,7 @@ function initPlugin(settings) {
             if (context.user !== undefined) {
                 const session = findSessionByUserId(context.user._id);
                 if (session !== undefined) {
-                    context.storage.delete('sessions', session._id);
+                    context.protectedStorage.delete('sessions', session._id);
                 }
             } else {
                 throw new CredentialError('User session does not exist');
@@ -83,18 +83,18 @@ function initPlugin(settings) {
         }
 
         function saveSession(userId) {
-            let session = context.storage.add('sessions', { userId });
+            let session = context.protectedStorage.add('sessions', { userId });
             const accessToken = hash(session._id);
-            session = context.storage.set('sessions', session._id, Object.assign({ accessToken }, session));
+            session = context.protectedStorage.set('sessions', session._id, Object.assign({ accessToken }, session));
             return session;
         }
 
         function findSessionByToken(userToken) {
-            return context.storage.query('sessions', { accessToken: userToken })[0];
+            return context.protectedStorage.query('sessions', { accessToken: userToken })[0];
         }
 
         function findSessionByUserId(userId) {
-            return context.storage.query('sessions', { userId })[0];
+            return context.protectedStorage.query('sessions', { userId })[0];
         }
     };
 }
