@@ -11,13 +11,14 @@ function initPlugin(settings) {
             logout
         };
 
-        const userToken = request.headers['X-Authorization'];
+        const userToken = request.headers['x-authorization'];
         if (userToken !== undefined) {
             let user;
             const session = findSessionByToken(userToken);
             if (session !== undefined) {
                 const userData = context.storage.get('users', session.userId);
                 if (userData !== undefined) {
+                    console.log('Authorized as ' + userData[identity]);
                     user = userData;
                 }
             }
