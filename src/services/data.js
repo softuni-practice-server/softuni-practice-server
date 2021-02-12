@@ -45,6 +45,15 @@ function get(context, tokens, query, body) {
         if (query.pageSize) {
             responseData = responseData.slice(0, pageSize);
         }
+
+        if (query.select) {
+            const props = query.select.split(',').filter(p => p != '');
+            responseData = responseData.map(r => {
+                const result = {};
+                props.forEach(p => result[p] = r[p]);
+                return result;
+            });
+        }
     } catch (err) {
         throw new NotFoundError();
     }
