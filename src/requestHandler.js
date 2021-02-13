@@ -7,7 +7,7 @@ function createHandler(plugins, services) {
         console.info(`<< ${req.method} ${req.url}`);
 
         let status = 200;
-        const headers = {
+        let headers = {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json'
         };
@@ -20,10 +20,19 @@ function createHandler(plugins, services) {
                 'Access-Control-Max-Age': '86400',
                 'Access-Control-Allow-Headers': 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-Authorization'
             });
-        } else {
-            // TODO: handle dev console requests (via web interface)
+        } else {           
+            await handle();
+        }
 
+        res.writeHead(status, headers);
+        res.end(result);
+
+        async function handle() {
             const { serviceName, tokens, query, body } = await parseRequest(req);
+            // TODO: handle dev console requests (via web interface)
+            if (serviceName == 'admin') {
+                return ({headers, result} = services['admin'](method, tokens, query, body));
+            }
 
             const service = services[serviceName];
 
@@ -56,9 +65,6 @@ function createHandler(plugins, services) {
                 result = JSON.stringify(result);
             }
         }
-
-        res.writeHead(status, headers);
-        res.end(result);
     };
 }
 
