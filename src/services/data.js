@@ -13,13 +13,14 @@ dataService.put(':collection', put);
 dataService.delete(':collection', del);
 
 function validateRequest(context, tokens, query) {
+    /*
     if (context.params.collection == undefined) {
         throw new RequestError('Please, specify collection name');
     }
+    */
     if (tokens.length > 1) {
         throw new RequestError();
     }
-    // TODO validate query params, once implemented
 }
 
 
@@ -34,8 +35,10 @@ function get(context, tokens, query, body) {
         if (query.where) {
             const [prop, value] = query.where.split('=');
             responseData = context.storage.query(context.params.collection, { [prop]: JSON.parse(value) });
-        } else {
+        } else if (context.params.collection) {
             responseData = context.storage.get(context.params.collection, tokens[0]);
+        } else {
+            return context.storage.get();
         }
 
         if (query.offset) {

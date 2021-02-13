@@ -10,7 +10,7 @@ module.exports = (method, tokens, query, body) => {
     };
     let result = '';
 
-    const resource = tokens[0];
+    const resource = tokens.join('/');
     if (resource && resource.split('.').pop() == 'js') {
         headers['Content-Type'] = 'application/javascript';
 
