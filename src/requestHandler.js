@@ -6,6 +6,14 @@ function createHandler(plugins, services) {
         const method = req.method;
         console.info(`<< ${req.method} ${req.url}`);
 
+        // Redirect fix for admin panel relative paths
+        if (req.url.slice(-6) == '/admin') {
+            res.writeHead(302, {
+                'Location': `http://${req.headers.host}/admin/`
+            });
+            return res.end();
+        }
+
         let status = 200;
         let headers = {
             'Access-Control-Allow-Origin': '*',
@@ -20,7 +28,7 @@ function createHandler(plugins, services) {
                 'Access-Control-Max-Age': '86400',
                 'Access-Control-Allow-Headers': 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-Authorization'
             });
-        } else {           
+        } else {
             await handle();
         }
 
@@ -31,7 +39,7 @@ function createHandler(plugins, services) {
             const { serviceName, tokens, query, body } = await parseRequest(req);
             // TODO: handle dev console requests (via web interface)
             if (serviceName == 'admin') {
-                return ({headers, result} = services['admin'](method, tokens, query, body));
+                return ({ headers, result } = services['admin'](method, tokens, query, body));
             }
 
             const service = services[serviceName];
