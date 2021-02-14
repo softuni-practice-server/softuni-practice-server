@@ -2,10 +2,12 @@ const jsonstore = require('./jsonstore');
 const users = require('./users');
 const data = require('./data');
 const favicon = require('./favicon');
+const admin = require('./admin');
 
 module.exports = {
     jsonstore,
     users,
     data,
-    favicon
+    favicon,
+    admin
 };
