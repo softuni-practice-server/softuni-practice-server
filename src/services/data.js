@@ -27,8 +27,6 @@ function validateRequest(context, tokens, query) {
 function get(context, tokens, query, body) {
     validateRequest(context, tokens, query);
 
-    console.log(query);
-
     let responseData;
 
     try {

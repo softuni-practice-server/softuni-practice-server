@@ -29,17 +29,38 @@ function createHandler(plugins, services) {
                 'Access-Control-Allow-Headers': 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, X-Authorization'
             });
         } else {
-            await handle();
+            try {
+                const context = processPlugins();
+                await handle(context);
+            } catch (err) {
+                if (err instanceof ServiceError) {
+                    status = err.status || 400;
+                    result = composeErrorObject(err.code || status, err.message);
+                } else {
+                    // Unhandled exception, this is due to an error in the service code - REST consumers should never have to encounter this;
+                    // If it happens, it must be debugged in a future version of the server
+                    console.error(err);
+                    status = 500;
+                    result = composeErrorObject(500, 'Server Error');
+                }
+            }
         }
 
         res.writeHead(status, headers);
         res.end(result);
 
-        async function handle() {
+        function processPlugins() {
+            const context = { params: {} };
+            plugins.forEach(decorate => decorate(context, req));
+            return context;
+        }
+
+        async function handle(context) {
             const { serviceName, tokens, query, body } = await parseRequest(req);
-            // TODO: handle dev console requests (via web interface)
             if (serviceName == 'admin') {
                 return ({ headers, result } = services['admin'](method, tokens, query, body));
+            } else if (serviceName == 'favicon.ico') {
+                return ({ headers, result } = services['favicon'](method, tokens, query, body));
             }
 
             const service = services[serviceName];
@@ -47,24 +68,9 @@ function createHandler(plugins, services) {
             if (service === undefined) {
                 status = 400;
                 result = composeErrorObject(400, `Service "${serviceName}" is not supported`);
+                console.error('Missing service ' + serviceName);
             } else {
-                try {
-                    const context = { params: {} };
-                    plugins.forEach(decorate => decorate(context, req)); // Decorate context with plugin functionality
-
-                    result = await service(context, { method, tokens, query, body });
-                } catch (err) {
-                    if (err instanceof ServiceError) {
-                        status = err.status || 400;
-                        result = composeErrorObject(err.code || status, err.message);
-                    } else {
-                        // Unhandled exception, this is due to an error in the service code - REST consumers should never have to encounter this;
-                        // If it happens, it must be debugged in a future version of the server
-                        console.error(err);
-                        status = 500;
-                        result = composeErrorObject(500, 'Server Error');
-                    }
-                }
+                result = await service(context, { method, tokens, query, body });
             }
 
             // NOTE: currently there is no scenario where result is undefined - it will either be data, or an error object;
@@ -75,6 +81,8 @@ function createHandler(plugins, services) {
         }
     };
 }
+
+
 
 function composeErrorObject(code, message) {
     return {
