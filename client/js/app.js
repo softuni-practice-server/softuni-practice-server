@@ -1,22 +1,34 @@
-import page from '//unpkg.com/page/page.mjs';
+//import page from '//unpkg.com/page/page.mjs';
 import { html, render } from './dom.js';
-import { getCollections } from './api.js';
+import { collectionList } from './editor/collection.js';
+import { recordTable } from './editor/record.js';
 
 
-async function start() {
+function start() {
     const main = document.querySelector('main');
+    editor(main);
+}
 
-    const collections = await getCollections();
+async function editor(main) {
+    let list = html`<div class="col">Loading&hellip;</div>`;
+    let viewer = html`<div class="col">Select collection to view records</div>`;
+    display();
 
-    const view = html`
-    <div>
-        <h1>Collections</h1>
-        <ul>
-            ${collections.map(c => html`<li>${c}</li>`)}
-        </ul>
-    </div>`;
+    list = html`<div class="col">${await collectionList(onSelect)}</div>`;
+    display();
 
-    render(view, main);
+    async function display() { 
+        render(html`
+        <section class="layout">
+            ${list}
+            ${viewer}
+        </section>`, main);
+    }
+
+    async function onSelect(name) {
+        viewer = html`<div class="col">${await recordTable(name)}</div>`;
+        display();
+    }
 }
 
 start();
