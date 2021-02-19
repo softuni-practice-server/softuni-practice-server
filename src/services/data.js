@@ -36,7 +36,28 @@ function get(context, tokens, query, body) {
         } else if (context.params.collection) {
             responseData = context.storage.get(context.params.collection, tokens[0]);
         } else {
+            // Get list of collections
             return context.storage.get();
+        }
+
+        if (query.sortBy) {
+            const props = query.sortBy
+                .split(',')
+                .filter(p => p != '')
+                .map(p => p.split(' ').filter(p => p != ''))
+                .map(([p, desc]) => ({ prop: p, desc: desc ? true : false }));
+
+            // Sorting priority is from first ot last, therefore we sort from last to first
+            for (let i = props.length - 1; i >= 0; i--) {
+                let { prop, desc } = props[i];
+                responseData.sort(({ [prop]: propA }, { [prop]: propB }) => {
+                    if (typeof propA == 'number' && typeof propB == 'number') {
+                        return (propA - propB) * (desc ? -1 : 1);
+                    } else {
+                        return propA.localeCompare(propB) * (desc ? -1 : 1);
+                    }
+                });
+            }
         }
 
         if (query.offset) {
