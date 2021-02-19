@@ -85,10 +85,10 @@ function createHandler(plugins, services) {
 
 
 function composeErrorObject(code, message) {
-    return {
+    return JSON.stringify({
         code,
         message
-    };
+    });
 }
 
 async function parseRequest(req) {
