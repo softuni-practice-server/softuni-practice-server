@@ -62,9 +62,9 @@ function createHandler(plugins, services) {
             } else if (serviceName == 'favicon.ico') {
                 return ({ headers, result } = services['favicon'](method, tokens, query, body));
             }
-
+            
             const service = services[serviceName];
-
+            
             if (service === undefined) {
                 status = 400;
                 result = composeErrorObject(400, `Service "${serviceName}" is not supported`);

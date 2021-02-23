@@ -4,14 +4,17 @@ const Service = require('./Service');
 
 const data = fs.readdirSync('./data').reduce((p, c) => {
     const content = JSON.parse(fs.readFileSync('./data/' + c));
+    const collection = c.slice(0, -5);
+    p[collection] = {};
     for (let endpoint in content) {
-        p[endpoint] = content[endpoint];
+        p[collection][endpoint] = content[endpoint];
     }
     return p;
 }, {});
 
 const actions = {
     get: (context, tokens, query, body) => {
+        tokens = [context.params.collection, ...tokens];
         let responseData = data;
         for (let token of tokens) {
             if (responseData !== undefined) {
@@ -21,6 +24,7 @@ const actions = {
         return responseData;
     },
     post: (context, tokens, query, body) => {
+        tokens = [context.params.collection, ...tokens];
         console.log('Request body:\n', body);
 
         // TODO handle collisions, replacement
@@ -37,6 +41,7 @@ const actions = {
         return responseData[newId];
     },
     put: (context, tokens, query, body) => {
+        tokens = [context.params.collection, ...tokens];
         console.log('Request body:\n', body);
 
         let responseData = data;
@@ -51,6 +56,7 @@ const actions = {
         return responseData;
     },
     delete: (context, tokens, query, body) => {
+        tokens = [context.params.collection, ...tokens];
         let responseData = data;
 
         for (let i = 0; i < tokens.length; i++) {
