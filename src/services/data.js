@@ -25,7 +25,6 @@ function validateRequest(context, tokens, query) {
 
 
 function get(context, tokens, query, body) {
-    console.log('wut', tokens);
     validateRequest(context, tokens, query);
 
     let responseData;
