@@ -40,6 +40,10 @@ function get(context, tokens, query, body) {
             return context.storage.get();
         }
 
+        if (query.count) {
+            return responseData.length;
+        }
+
         if (query.sortBy) {
             const props = query.sortBy
                 .split(',')
