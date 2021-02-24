@@ -126,9 +126,9 @@ Append `select={propList}` to the query parameters, where `{propList}` is a URL-
 Note that system-generated properties, like `_id`, are **not** automatically included if you use this option and must be manually specified (if you need them).
 
 ##### Collection Size
-*This parameter **cannot** be combined with any of the other options*.
+*This parameter **can** be combined with the `where` option. It **cannot** be combined with any of the other options*.
 
-Append `count` to the query parameters. This changes the response from the service to be a single number, representing the number of entries in the collection. 
+Append `count` to the query parameters. This changes the response from the service to be a single number, representing the number of entries in the collection (or number of matching entries, if combined with `where`). 
 
 ##### Pagination
 *If you omit the `pageSize` option, the service automatically limits the result to 10 entries.*
