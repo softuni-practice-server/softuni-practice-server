@@ -80,6 +80,27 @@ function get(context, tokens, query, body) {
                 return result;
             });
         }
+
+        try {
+            if (query.load) {
+                const props = query.load.split(',').filter(p => p != '');
+                props.map(prop => {
+                    const [propName, relationTokens] = prop.split('=');
+                    const [idSource, collection] = relationTokens.split(':');
+                    console.log(`Loading related records from "${collection}" into "${propName}", joined on "_id"="${idSource}"`);
+                    const storageSource = collection == 'users' ? context.protectedStorage : context.storage;
+                    responseData.forEach(r => {
+                        const seekId = r[idSource];
+                        const related = storageSource.get(collection, seekId);
+                        delete related.hashedPassword;
+                        r[propName] = related;
+                    });
+                });
+            }
+        } catch (err) {
+            console.log(err);
+        }
+
     } catch (err) {
         throw new NotFoundError();
     }
