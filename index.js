@@ -3,12 +3,14 @@ const createHandler = require('./src/requestHandler');
 const services = require('./src/services');
 const createStorage = require('./src/plugins/storage');
 const createAuth = require('./src/plugins/auth');
+const createUtil = require('./src/plugins/util');
 
 const settings = require('./settings.json');
 
 const plugins = [
     createStorage(settings),
-    createAuth(settings)
+    createAuth(settings),
+    createUtil(settings)
 ];
 
 const server = http.createServer(createHandler(plugins, services));

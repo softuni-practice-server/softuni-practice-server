@@ -20,6 +20,7 @@ function createHandler(plugins, services) {
             'Content-Type': 'application/json'
         };
         let result;
+        let context;
 
         if (method == 'OPTIONS') {
             Object.assign(headers, {
@@ -30,7 +31,7 @@ function createHandler(plugins, services) {
             });
         } else {
             try {
-                const context = processPlugins();
+                context = processPlugins();
                 await handle(context);
             } catch (err) {
                 if (err instanceof ServiceError) {
@@ -47,6 +48,9 @@ function createHandler(plugins, services) {
         }
 
         res.writeHead(status, headers);
+        if (context.util.throttle) {
+            await new Promise(r => setTimeout(r, 250 + Math.random() * 750));
+        }
         res.end(result);
 
         function processPlugins() {

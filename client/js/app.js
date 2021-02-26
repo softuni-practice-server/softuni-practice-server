@@ -23,7 +23,7 @@ async function editor(main) {
     async function display() {
         render(html`
         <section class="layout">
-            ${until(throttlePanel(), html`<p>Loading</p>`)}
+            ${until(throttlePanel(display), html`<p>Loading</p>`)}
         </section>
         <section class="layout">
             ${list}
