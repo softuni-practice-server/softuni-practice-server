@@ -1,7 +1,10 @@
 const fs = require('fs');
 
+
+const mode = process.argv[2] == '-dev' ? 'dev' : 'prod';
+
 const files = {
-    index: fs.readFileSync('./client/index.html', 'utf-8')
+    index: mode == 'prod' ? require('../../dist/bundle.json') : fs.readFileSync('./client/index.html', 'utf-8')
 };
 
 module.exports = (method, tokens, query, body) => {

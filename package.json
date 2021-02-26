@@ -5,9 +5,10 @@
     "main": "index.js",
     "scripts": {
         "start": "node index.js",
-        "dev": "nodemon index.js",
+        "dev": "nodemon -e * index.js -dev",
         "test": "mocha tests",
-        "build": "rollup --config"
+        "client": "rollup --config client.config.js",
+        "build": "rollup --config rollup.config.js"
     },
     "repository": {
         "type": "git",

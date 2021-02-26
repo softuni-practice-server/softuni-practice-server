@@ -11,6 +11,11 @@
             margin: 0;
         }
 
+        body {
+            padding: 32px;
+            font-size: 16px;
+        }
+
         .layout::after {
             content: '';
             clear: both;
@@ -22,12 +27,24 @@
             float: left;
         }
 
+        p {
+            padding: 8px 16px;
+        }
+
         table {
             border-collapse: collapse;
         }
 
+        caption {
+            font-size: 120%;
+            text-align: left;
+            padding: 4px 8px;
+            font-weight: bold;
+            background-color: #ddd;
+        }
+
         table, tr, th, td {
-            border: 1px solid black
+            border: 1px solid #ddd;
         }
 
         th, td {
@@ -36,6 +53,21 @@
 
         ul {
             list-style: none;
+        }
+
+        .collection-list a {
+            display: block;
+            width: 120px;
+            padding: 4px 8px;
+            text-decoration: none;
+            color: black;
+            background-color: #ccc;
+        }
+        .collection-list a:hover {
+            background-color: #ddd;
+        }
+        .collection-list a:visited {
+            color: black;
         }
     </style>
     <script type="module" src="js/app.js"></script>

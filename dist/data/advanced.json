@@ -1,0 +1,76 @@
+{
+    "profiles": {
+        "fb352199-bcbc-4e1d-a1dc-ed346a6fb49a": {
+            "_id": "fb352199-bcbc-4e1d-a1dc-ed346a6fb49a",
+            "username": "John",
+            "email": "john@users.bg",
+            "age": 31
+        },
+        "4fccdb3a-59c9-4e45-a28f-870fe5d1d8be": {
+            "_id": "4fccdb3a-59c9-4e45-a28f-870fe5d1d8be",
+            "username": "Peter",
+            "email": "peter@users.bg",
+            "age": 23
+        },
+        "562f8422-88cc-47f9-b273-ed12a319d041": {
+            "_id": "562f8422-88cc-47f9-b273-ed12a319d041",
+            "username": "Mary",
+            "email": "mary@users.bg",
+            "age": 29
+        },
+        "9d12abaf-b2f0-4c10-bb14-8bb90b5e518f": {
+            "_id": "9d12abaf-b2f0-4c10-bb14-8bb90b5e518f",
+            "username": "George",
+            "email": "george@users.bg",
+            "age": 25
+        },
+        "8677c541-4041-4122-9db3-b88caf93e76d": {
+            "_id": "8677c541-4041-4122-9db3-b88caf93e76d",
+            "username": "Bob",
+            "email": "bob@users.bg",
+            "age": 34
+        }
+    },
+    "articles": {
+        "list": [
+            {
+                "_id": "ee9823ab-c3e8-4a14-b998-8c22ec246bd3",
+                "title": "Scalable Vector Graphics"
+            },
+            {
+                "_id": "fdf00227-084f-48bc-a450-9242a0963f1f",
+                "title": "Open standard"
+            },
+            {
+                "_id": "8cd30492-3c55-4864-a1a2-7870e1694116",
+                "title": "Unix"
+            },
+            {
+                "_id": "9d776e93-bc6f-408c-9ab8-8aad7a5cffc4",
+                "title": "ALGOL"
+            }
+        ],
+        "details": {
+            "ee9823ab-c3e8-4a14-b998-8c22ec246bd3": {
+                "_id": "ee9823ab-c3e8-4a14-b998-8c22ec246bd3",
+                "title": "Scalable Vector Graphics",
+                "content": "Scalable Vector Graphics (SVG) is an Extensible Markup Language (XML)-based vector image format for two-dimensional graphics with support for interactivity and animation. The SVG specification is an open standard developed by the World Wide Web Consortium (W3C) since 1999."
+            },
+            "fdf00227-084f-48bc-a450-9242a0963f1f": {
+                "_id": "fdf00227-084f-48bc-a450-9242a0963f1f",
+                "title": "Open standard",
+                "content": "An open standard is a standard that is publicly available and has various rights to use associated with it and may also have various properties of how it was designed (e.g. open process). There is no single definition, and interpretations vary with usage."
+            },
+            "8cd30492-3c55-4864-a1a2-7870e1694116": {
+                "_id": "8cd30492-3c55-4864-a1a2-7870e1694116",
+                "title": "Unix",
+                "content": "Unix (trademarked as UNIX) is a family of multitasking, multiuser computer operating systems that derive from the original AT&T Unix, development starting in the 1970s at the Bell Labs research center by Ken Thompson, Dennis Ritchie, and others."
+            },
+            "9d776e93-bc6f-408c-9ab8-8aad7a5cffc4": {
+                "_id": "9d776e93-bc6f-408c-9ab8-8aad7a5cffc4",
+                "title": "ALGOL",
+                "content": "ALGOL (short for \"Algorithmic Language\") is a family of imperative computer programming languages originally developed in 1958. ALGOL heavily influenced many other languages and was the standard method for algorithm description used by the Association for Computing Machinery (ACM) in textbooks and academic sources until object-oriented languages came around, for more than thirty years."
+            }
+        }
+    }
+}

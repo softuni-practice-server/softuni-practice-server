@@ -1,5 +1,5 @@
-import { html } from '../dom.js';
-import { getRecords } from '../api.js';
+import { html } from '../../dom.js';
+import { getRecords } from '../../api.js';
 
 export async function recordTable(collectionName) {
     const records = await getRecords(collectionName);
@@ -7,6 +7,7 @@ export async function recordTable(collectionName) {
 
     return html`
     <table>
+        <caption>${collectionName}</caption>
         <thead>
             <tr>${layout.map(f => html`<th>${f}</th>`)}</tr>
         </thead>
@@ -26,6 +27,6 @@ function getLayout(records) {
 function recordRow(record, layout) {
     return html`
     <tr>
-        ${layout.map(f => html`<td>${record[f] || html`<span>(missing)</span>`}</td>`)}
+        ${layout.map(f => html`<td>${JSON.stringify(record[f]) || html`<span>(missing)</span>`}</td>`)}
     </tr>`;
 }
