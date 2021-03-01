@@ -3,7 +3,7 @@ const fs = require('fs');
 const html = fs.readFileSync('./client/index.html', 'utf-8');
 const client = fs.readFileSync('./dist/client.js', 'utf-8');
 
-const bundle = html.replace('<script type="module" src="app.js"></script>', `<script type="module">\n${client}\n</script>`);
+const bundle = html.replace('<script type="module" src="js/app.js"></script>', `<script type="module">\n${client}\n</script>`);
 fs.writeFileSync('./dist/bundle.json', JSON.stringify(bundle));
 
 
