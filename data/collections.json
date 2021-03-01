@@ -1,6 +1,44 @@
 {
-    "books": {},
-    "students": {},
+    "books": {
+        "d953e5fb-a585-4d6b-92d3-ee90697398a0": {
+            "author": "J.K.Rowling",
+            "title": "Harry Potter and the Philosopher's Stone"
+        },
+        "d953e5fb-a585-4d6b-92d3-ee90697398a1": {
+            "author": "Svetlin Nakov",
+            "title": "C# Fundamentals"
+        }
+    },
+    "students": {
+        "54e6d099-6e00-4613-97b7-bc2b6bdc1db5": {
+            "firstName": "Isaac",
+            "lastName": "Netero",
+            "facultyNumber": "90000587896",
+            "grade": 4.99,
+            "_id": "54e6d099-6e00-4613-97b7-bc2b6bdc1db5"
+        },
+        "f94698f3-e4c0-45b2-b391-34e555ed702d": {
+            "firstName": "Nvy",
+            "lastName": "Ose",
+            "facultyNumber": "90000123456",
+            "grade": 6,
+            "_id": "f94698f3-e4c0-45b2-b391-34e555ed702d"
+        },
+        "a8ab018a-5a00-4652-ab3b-036bc91bd21f": {
+            "firstName": "Sunny",
+            "lastName": "Jackson",
+            "facultyNumber": "90000334562",
+            "grade": 4.4,
+            "_id": "a8ab018a-5a00-4652-ab3b-036bc91bd21f"
+        },
+        "a9d1a18d-c617-4f05-b322-05aab720fe19": {
+            "firstName": "Aina",
+            "lastName": "Haward",
+            "facultyNumber": "90000451254",
+            "grade": 5.56,
+            "_id": "a9d1a18d-c617-4f05-b322-05aab720fe19"
+        }
+    },
     "myboard": {
         "posts": {},
         "comments": {}
