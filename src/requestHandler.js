@@ -19,9 +19,10 @@ function createHandler(plugins, services) {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json'
         };
-        let result;
+        let result = '';
         let context;
 
+        // NOTE: the OPTIONS method results in undefined result and also it never processes plugins - keep this in mind
         if (method == 'OPTIONS') {
             Object.assign(headers, {
                 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -48,8 +49,8 @@ function createHandler(plugins, services) {
         }
 
         res.writeHead(status, headers);
-        if (context.util.throttle) {
-            await new Promise(r => setTimeout(r, 250 + Math.random() * 750));
+        if (context != undefined && context.util != undefined && context.util.throttle) {
+            await new Promise(r => setTimeout(r, 500 + Math.random() * 500));
         }
         res.end(result);
 
@@ -66,9 +67,9 @@ function createHandler(plugins, services) {
             } else if (serviceName == 'favicon.ico') {
                 return ({ headers, result } = services['favicon'](method, tokens, query, body));
             }
-            
+
             const service = services[serviceName];
-            
+
             if (service === undefined) {
                 status = 400;
                 result = composeErrorObject(400, `Service "${serviceName}" is not supported`);
