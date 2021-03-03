@@ -30,7 +30,7 @@ function parseWhere(query) {
         '>=': (prop, value) => record => record[prop] >= JSON.parse(value),
         '>': (prop, value) => record => record[prop] > JSON.parse(value),
         '=': (prop, value) => record => record[prop] == JSON.parse(value),
-        ' like ': (prop, value) => record => record[prop].includes(JSON.parse(value)),
+        ' like ': (prop, value) => record => record[prop].toLowerCase().includes(JSON.parse(value).toLowerCase()),
         ' in ': (prop, value) => record => JSON.parse(`[${/\((.+?)\)/.exec(value)[1]}]`).includes(record[prop]),
     };
     const pattern = new RegExp(`^(.+?)(${Object.keys(operators).join('|')})(.+?)$`, 'i');
