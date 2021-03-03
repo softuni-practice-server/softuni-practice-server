@@ -85,11 +85,13 @@ function get(context, tokens, query, body) {
 
         if (query.select) {
             const props = query.select.split(',').filter(p => p != '');
-            responseData = responseData.map(r => {
+            responseData = Array.isArray(responseData) ? responseData.map(transform) : transform(responseData);
+
+            function transform(r) {
                 const result = {};
                 props.forEach(p => result[p] = r[p]);
                 return result;
-            });
+            }
         }
 
         if (query.load) {
@@ -99,12 +101,15 @@ function get(context, tokens, query, body) {
                 const [idSource, collection] = relationTokens.split(':');
                 console.log(`Loading related records from "${collection}" into "${propName}", joined on "_id"="${idSource}"`);
                 const storageSource = collection == 'users' ? context.protectedStorage : context.storage;
-                responseData.forEach(r => {
+                responseData = Array.isArray(responseData) ? responseData.map(transform) : transform(responseData);
+
+                function transform(r) {
                     const seekId = r[idSource];
                     const related = storageSource.get(collection, seekId);
                     delete related.hashedPassword;
                     r[propName] = related;
-                });
+                    return r;
+                }
             });
         }
 
