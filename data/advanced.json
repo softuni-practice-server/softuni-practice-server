@@ -72,5 +72,63 @@
                 "content": "ALGOL (short for \"Algorithmic Language\") is a family of imperative computer programming languages originally developed in 1958. ALGOL heavily influenced many other languages and was the standard method for algorithm description used by the Association for Computing Machinery (ACM) in textbooks and academic sources until object-oriented languages came around, for more than thirty years."
             }
         }
+    },
+    "dropdown": {
+        "985d9eab-ad2e-4622-a5c8-116261fb1fd2": {
+            "text": "Rome",
+            "_id": "985d9eab-ad2e-4622-a5c8-116261fb1fd2"
+        },
+        "3987279d-0ad4-4afb-8ca9-5b256ae3b298": {
+            "text": "Amsterdam",
+            "_id": "3987279d-0ad4-4afb-8ca9-5b256ae3b298"
+        },
+        "8f414b4f-ab39-4d36-bedb-2ad69da9c830": {
+            "text": "Munich",
+            "_id": "8f414b4f-ab39-4d36-bedb-2ad69da9c830"
+        }
+    },
+    "table": {
+        "50537fbe-5d7e-44bf-a90f-69383c3b5bf4": {
+            "firstName": "John",
+            "lastName": "Dan",
+            "email": "john@john-dam.com",
+            "course": "JS-CORE",
+            "_id": "50537fbe-5d7e-44bf-a90f-69383c3b5bf4"
+        },
+        "68f653c3-97c7-40be-9f8e-b3f182a0061e": {
+            "firstName": "Max",
+            "lastName": "Peterson",
+            "email": "max@softuni.com",
+            "course": "JS-WEB",
+            "_id": "68f653c3-97c7-40be-9f8e-b3f182a0061e"
+        },
+        "b9e75605-b617-43ac-87a9-8409a990801a": {
+            "firstName": "Philip",
+            "lastName": "Anderson",
+            "email": "philip@softuni.com",
+            "course": "FRONT-END",
+            "_id": "b9e75605-b617-43ac-87a9-8409a990801a"
+        },
+        "a459bacd-2912-4eb4-848c-8bc471da2d9f": {
+            "firstName": "Sam",
+            "lastName": "Lima",
+            "email": "sam@gmail.com",
+            "course": "TECH-JS",
+            "_id": "a459bacd-2912-4eb4-848c-8bc471da2d9f"
+        },
+        "28f0b99e-218b-4079-873c-f976727e3c44": {
+            "firstName": "Mary",
+            "lastName": "Sue",
+            "email": "mary@gmail.com",
+            "course": "JS-FUNDAMENTALS",
+            "_id": "28f0b99e-218b-4079-873c-f976727e3c44"
+        },
+        "79aacd2b-b8ce-4eed-9aab-82abbb334741": {
+            "firstName": "Peter",
+            "lastName": "McConnel",
+            "email": "peter@gmail.com",
+            "course": "JS-CORE",
+            "_id": "79aacd2b-b8ce-4eed-9aab-82abbb334741"
+        }
     }
 }
