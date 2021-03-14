@@ -38,10 +38,10 @@ function initPlugin(settings) {
             } else if (context.protectedStorage.query('users', { [identity]: body[identity] }).length !== 0) {
                 throw new ConflictError(`A user with the same ${identity} already exists`);
             } else {
-                const newUser = {
+                const newUser = Object.assign({}, body, {
                     [identity]: body[identity],
                     hashedPassword: hash(body.password)
-                };
+                });
                 const result = context.protectedStorage.add('users', newUser);
                 delete result.hashedPassword;
 
