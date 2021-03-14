@@ -15,7 +15,8 @@
                 "hashedPassword": "fac7060c3e17e6f151f247eacb2cd5ae80b8c36aedb8764e18a41bbdc16aa302"
             }
         },
-        "sessions": {}
+        "sessions": {},
+        "members": {}
     },
     "seedData": {
         "recipes": {
@@ -209,6 +210,70 @@
                 "img": "./images/dinner.jpg",
                 "_createdOn": 1615033491967,
                 "_id": "b8608c22-dd57-4b24-948e-b358f536b958"
+            }
+        },
+        "catalog": {
+            "53d4dbf5-7f41-47ba-b485-43eccb91cb95": {
+                "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
+                "make": "Table",
+                "model": "Swedish",
+                "year": 2015,
+                "description": "Medium table",
+                "price": 235,
+                "img": "./images/table.png",
+                "material": "Hardwood",
+                "_createdOn": 1615545143015,
+                "_id": "53d4dbf5-7f41-47ba-b485-43eccb91cb95"
+            },
+            "f5929b5c-bca4-4026-8e6e-c09e73908f77": {
+                "_ownerId": "847ec027-f659-4086-8032-5173e2f9c93a",
+                "make": "Sofa",
+                "model": "ES-549-M",
+                "year": 2018,
+                "description": "Three-person sofa, blue",
+                "price": 1200,
+                "img": "./images/sofa.jpg",
+                "material": "Frame - steel, plastic; Upholstery - fabric",
+                "_createdOn": 1615545572296,
+                "_id": "f5929b5c-bca4-4026-8e6e-c09e73908f77"
+            },
+            "c7f51805-242b-45ed-ae3e-80b68605141b": {
+                "_ownerId": "847ec027-f659-4086-8032-5173e2f9c93a",
+                "make": "Chair",
+                "model": "Bright Dining Collection",
+                "year": 2017,
+                "description": "Dining chair",
+                "price": 180,
+                "img": "./images/chair.jpg",
+                "material": "Wood laminate; leather",
+                "_createdOn": 1615546332126,
+                "_id": "c7f51805-242b-45ed-ae3e-80b68605141b"
+            }
+        },
+        "teams": {
+            "34a1cab1-81f1-47e5-aec3-ab6c9810efe1": {
+                "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
+                "name": "Storm Troopers",
+                "logoUrl": "/assets/atat.png",
+                "description": "These ARE the droids we're looking for",
+                "_createdOn": 1615737591748,
+                "_id": "34a1cab1-81f1-47e5-aec3-ab6c9810efe1"
+            },
+            "dc888b1a-400f-47f3-9619-07607966feb8": {
+                "_ownerId": "847ec027-f659-4086-8032-5173e2f9c93a",
+                "name": "Team Rocket",
+                "logoUrl": "/assets/rocket.png",
+                "description": "Gotta catch 'em all!",
+                "_createdOn": 1615737655083,
+                "_id": "dc888b1a-400f-47f3-9619-07607966feb8"
+            },
+            "733fa9a1-26b6-490d-b299-21f120b2f53a": {
+                "_ownerId": "847ec027-f659-4086-8032-5173e2f9c93a",
+                "name": "Minions",
+                "logoUrl": "/assets/hydrant.png",
+                "description": "Friendly neighbourhood jelly beans, helping evil-doers succeed.",
+                "_createdOn": 1615737688036,
+                "_id": "733fa9a1-26b6-490d-b299-21f120b2f53a"
             }
         }
     }
