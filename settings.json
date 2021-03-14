@@ -15,8 +15,7 @@
                 "hashedPassword": "fac7060c3e17e6f151f247eacb2cd5ae80b8c36aedb8764e18a41bbdc16aa302"
             }
         },
-        "sessions": {},
-        "members": {}
+        "sessions": {}
     },
     "seedData": {
         "recipes": {
@@ -274,6 +273,33 @@
                 "description": "Friendly neighbourhood jelly beans, helping evil-doers succeed.",
                 "_createdOn": 1615737688036,
                 "_id": "733fa9a1-26b6-490d-b299-21f120b2f53a"
+            }
+        },
+        "members": {
+            "m1": {
+                "_ownerId": "35c62d76-8152-4626-8712-eeb96381bea8",
+                "status": "pending",
+                "teamId": "dc888b1a-400f-47f3-9619-07607966feb8",
+                "_id": "m1"
+            }
+        }
+    },
+    "rules": {
+        "users": {
+            ".create": false,
+            ".read": ["Owner"],
+            ".update": false,
+            ".delete": false
+        },
+        "members": {
+            ".update": "user._id == parent('teams', data.teamId)",
+            "*": {
+                "teamId": {
+                    ".update": false
+                },
+                "status": {
+                    ".create": "newData.status = 'pending'"
+                }
             }
         }
     }

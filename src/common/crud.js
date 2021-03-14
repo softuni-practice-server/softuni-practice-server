@@ -162,6 +162,8 @@ function get(context, tokens, query, body) {
         }
     }
 
+    context.canAccess(responseData);
+
     return responseData;
 }
 
@@ -172,6 +174,7 @@ function post(context, tokens, query, body) {
     if (tokens.length > 0) {
         throw new RequestError('Use PUT to update records');
     }
+    context.canAccess(undefined, body);
 
     body._ownerId = context.user._id;
     let responseData;
@@ -202,7 +205,7 @@ function put(context, tokens, query, body) {
         throw new NotFoundError();
     }
 
-    context.canAccess(existing);
+    context.canAccess(existing, body);
 
     try {
         responseData = context.storage.set(context.params.collection, tokens[0], body);

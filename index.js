@@ -4,13 +4,15 @@ const services = require('./src/services');
 const createStorage = require('./src/plugins/storage');
 const createAuth = require('./src/plugins/auth');
 const createUtil = require('./src/plugins/util');
+const createRules = require('./src/plugins/rules');
 
 const settings = require('./settings.json');
 
 const plugins = [
     createStorage(settings),
     createAuth(settings),
-    createUtil(settings)
+    createUtil(settings),
+    createRules(settings)
 ];
 
 const server = http.createServer(createHandler(plugins, services));
