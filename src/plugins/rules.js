@@ -19,6 +19,18 @@ function initPlugin(settings) {
     }, settings.rules);
 
     return function decorateContext(context, request) {
+        // special rules (evaluated at run-time)
+        const get = (collectionName, id) => {
+            return context.storage.get(collectionName, id);
+        };
+        const isOwner = (user, object) => {
+            return user._id == object._ownerId;
+        };
+        context.rules = {
+            get,
+            isOwner
+        };
+
         context.canAccess = canAccess;
 
         function canAccess(data, newData) {
@@ -64,11 +76,6 @@ function initPlugin(settings) {
             } else {
                 return false;
             }
-        }
-
-        // NOTE: this function is used in special eval rules
-        function parent(collectionName, id) {
-            return context.storage.get(collectionName, id)._ownerId;
         }
     };
 
@@ -116,14 +123,6 @@ function initPlugin(settings) {
             .map(([k, v]) => [k, v[action]]);
 
         return props;
-    }
-
-    function isOwner(user, data) {
-
-    }
-
-    function parent(collectionName, objectId) {
-
     }
 }
 
