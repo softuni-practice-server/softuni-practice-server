@@ -80,21 +80,6 @@ function get(context, tokens, query, body) {
             return context.storage.get();
         }
 
-        if (query.distinct) {
-            const props = query.distinct.split(',').filter(p => p != '');
-            responseData = Object.values(responseData.reduce((distinct, c) => {
-                const key = props.map(p => c[p]).join('::');
-                if (distinct.hasOwnProperty(key) == false) {
-                    distinct[key] = c;
-                }
-                return distinct;
-            }, {}));
-        }
-
-        if (query.count) {
-            return responseData.length;
-        }
-
         if (query.sortBy) {
             const props = query.sortBy
                 .split(',')
@@ -121,6 +106,21 @@ function get(context, tokens, query, body) {
         const pageSize = Number(query.pageSize) || 10;
         if (query.pageSize) {
             responseData = responseData.slice(0, pageSize);
+        }
+		
+		if (query.distinct) {
+            const props = query.distinct.split(',').filter(p => p != '');
+            responseData = Object.values(responseData.reduce((distinct, c) => {
+                const key = props.map(p => c[p]).join('::');
+                if (distinct.hasOwnProperty(key) == false) {
+                    distinct[key] = c;
+                }
+                return distinct;
+            }, {}));
+        }
+
+        if (query.count) {
+            return responseData.length;
         }
 
         if (query.select) {
