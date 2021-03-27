@@ -337,7 +337,7 @@
             ".delete": "isOwner(user, get('teams', data.teamId)) || isOwner(user, data)",
             "*": {
                 "teamId": {
-                    ".update": false
+                    ".update": "newData.teamId = data.teamId"
                 },
                 "status": {
                     ".create": "newData.status = 'pending'"
