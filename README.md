@@ -20,6 +20,9 @@ Note that changes to the data **will not be persisted**! All operations happen i
 
 ### JSON Store
 
+| [Read the detailed documentation for this service](./JSONSTORE.md)
+|---
+
 #### Configuration
 *This service does NOT use authentication - everything is fully accessible without any credentials.*
 
@@ -28,9 +31,6 @@ This service dynamically loads collections from the `./data/` folder, located wi
 #### CRUD Operations
 
 All requests are sent to `/jsonstore/:resource`. Resources can be nested and have any shape. Individual properties can be accessed by appending `/:propName` to the endpoint as deep as you require. Supported requests are `GET`, `POST`, `PUT`, `PATCH`, `DELETE`
-
-[Read the detailed documentation for this service](./JSONSTORE.md)
-
 
 ### Authentication
 
@@ -59,13 +59,14 @@ Any request which includes the `X-Admin` header will be **granted full access** 
 
 ### Collections
 
+| [Read the detailed documentation for this service](./COLLECTIONS.md)
+|---
+
 This service uses authentication - reading resources is public, but creating, updating and deleting can only be performed by authorized users. Additionally, only the original creator of a resource can edit or delete it.
 
 #### CRUD Operations
 
 Send requests to `/data/:collection` with appropriate method and headers. All operations, except for Read, require an authorization header to be present on the request (see the [Authentication](Authentication) section on how to obtain a valid token).
-
-[Read the detailed documentation for this service](./COLLECTIONS.md)
 
 ## Further Information
 You may create issues, regarding missing, incorrect or incomplete information, regarding the use of this service. Any contribution is welcome!
