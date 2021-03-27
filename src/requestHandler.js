@@ -78,10 +78,13 @@ function createHandler(plugins, services) {
                 result = await service(context, { method, tokens, query, body });
             }
 
-            // NOTE: currently there is no scenario where result is undefined - it will either be data, or an error object;
-            // this may change with further extension of the services, so this check should stay in place
+            // NOTE: logout does not return a result
+            // in this case the content type header should be omitted, to allow checks on the client
             if (result !== undefined) {
                 result = JSON.stringify(result);
+            } else {
+                status = 204;
+                delete headers['Content-Type'];
             }
         }
     };
