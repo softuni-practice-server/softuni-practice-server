@@ -48,8 +48,11 @@ Login by sending a `POST` request with `email` and `password` to `/users/login`.
 #### Logout
 Send an authorized `GET` request to `/users/logout`. **The service returns an empty response - if you attempt to parse it as JSON, you will receive an error!**
 
+#### Get User Details
+Send an authorized `GET` request to `/users/me`. The service will return the record of the user, associated with the passed-in session token.
+
 #### Authorized Requests
-To make an authorized request, add the following header, where `{token}` is the access token, returned by teh service upon successful login or registration:
+To make an authorized request, add the following header, where `{token}` is the access token, returned by the service upon successful login or registration:
 ```
 X-Authorization: {token}
 ```
