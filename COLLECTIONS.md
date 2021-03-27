@@ -2,7 +2,30 @@
 
 Detailed information on the usage of the Collections REST service.
 
-This service uses authentication - reading resources is public, but creating, updating and deleting can only be performed by authorized users. Additionally, only the original creator of a resource can edit or delete it (barring any special CLP or ACL rules for the record).
+**This service uses authentication** - reading resources is public, but creating, updating and deleting can only be performed by authorized users. Additionally, only the original creator of a resource can edit or delete it (barring any special CLP or ACL rules for the record).
+
+A tyipical request will have the following shape:
+```
+POST /data/collectionName
+Content-Type: application/json
+X-Authorization: {accessTokenFromAuthService}
+[Request body]
+```
+
+| Contents
+|---
+| [Read](#read)
+| [Create](#create)
+| [Update](#update)
+| [Partial Update](#partial-update)
+| [Delete](#delete)
+| [Selecting Properties](#selecting-properties)
+| [Collection Size](#collection-size)
+| [Pagination](#pagination)
+| [Sorting](#sorting)
+| [Search](#search)
+| [Distinct Records](#distinct-records)
+| [Relations](#relations)
 
 ## CRUD Operations
 
@@ -23,7 +46,7 @@ Send `POST` request to `/data/:collection` to create new entry. ID will be gener
 
 Send `PUT` request to `/data/:collection/:id` to update a single entry. Note that the existing entry will be replaced!
 
-### Partial update
+### Partial Update
 *This request requires authorization headers (see above). Only the owner of the resource can edit it.*
 
 Send `PATCH` request to `/data/:collection/:id` to partially update a single entry. The existing entry will be merged with the new data. System properties will **not** be affected.
@@ -35,7 +58,7 @@ Send `DELETE` request to `/data/:collection/:id` to delete a single entry.
 
 ## Advanced Retrieval
 
-By using query parameters, you can augment the returned results. Most of these parameters can be combined.
+By using **query parameters**, you can augment the returned results. Most of these parameters can be combined.
 
 ### Selecting Properties
 Append `select={propList}` to the query parameters, where `{propList}` is a URL-encoded string of comma-separated property names. The returned entries will only have the selected properties, which may greatly reduce network traffic.
@@ -49,7 +72,7 @@ GET /data/recipes?select=_id%2Cname%2Cimg
 ```
 
 ### Collection Size
-*This parameter **can** be combined with the `where` and `distinct` options. It **cannot** be combined with any of the other options*.
+*This parameter **can** be combined with the `where` and `distinct` options. It **cannot** be combined with any of the other options.*
 
 Append `count` to the query parameters. This changes the response from the service to be a single number, representing the number of entries in the collection (or number of matching entries, if combined with `where`). 
 
@@ -69,7 +92,7 @@ GET /data/recipes?offset=10&pageSize=5
 ```
 
 ### Sorting
-*This operation is automatically performed **before** pagination.*
+*This operation is automatically performed **before** pagination, regardless of the order of query parameter.*
 
 Append `sortBy={propList}` to the query parameters, where `{propList}` is a URL-encoded string of comma-separated property names. Sorting is performed **by value**, where the first listed property is the primary criteria, and any other properties are secondary, tertiary, and so on.
 
@@ -99,8 +122,18 @@ Append `where={match}` to the query parameters, where `{match}` is a URL-encoded
 GET /data/comments?where=recipeId%3D%228f414b4f-ab39-4d36-bedb-2ad69da9c830%22
 ```
 
-### Distinst Property Values
-*This operation is performed **before** sorting, so you cannot control which entry is selected when a duplicate is encountered.*
+You can also perform advanced search, such as number size comparison, string content and logical unions:
+
+* **Compare numbers:** `where=val >= 5`
+* **String contents (case-insensitive):** `where=title LIKE "lasagna"`
+* **Match one from list:** `where=category IN ("main", "soup", "appetizer")`
+* **Union to match on _all_ conditions:** `where=val >= 5 AND category IN ("main", "soup")`
+* **Union to match on _any_ of the conditions:** `where=val >= 5 OR category IN ("main", "soup")`
+
+Note that you **can chain** as many unions as you require, but you **cannot combine** AND and OR unions.
+
+### Distinct Records
+*This operation is performed **after** sorting, so you can control which entry is selected when a duplicate is encountered.*
 
 Append `distinct={propList}` to the query parameters, where `{propList}` is a URL-encoded string of comma-separated property names. This will return a filtered list, where each **combination** of the given properties only appears once (if there were duplicates, only the first encountered will be taken). **Note that if the property is missing in an entry, it's value will be assumed to be `undefined` - if the property is not part of the collection, only a single entry will be returned, since all values will be the same (`undefined`).**
 
@@ -128,7 +161,7 @@ propName=id:collection
 
 `propName` is the name of the property, which will receive the matched object from the related collection. `id` is the name of the property from the current collection, which holds the foreign key (`_id`). `collection` is the name of the related (foreign) collection. Note that matching can only be performed by the `_id` property in the foreign collection, so structure your relations accordingly.
 
-**Example:** To include information about the author of a comment, filtered for a specific `recipeId` (combined with `where`):
+**Example:** To include information about the author of a comment, match the `_ownerId` of the current record to the `_id` of records in foreign collection `users`; the result is also filtered for a specific `recipeId` (combined with `where`):
 ```
 (unencoded) /data/comments?where=recipeId="8f414b4f-ab39-4d36-bedb-2ad69da9c830"&load=author=_ownerId:users
 GET /data/comments?where=recipeId%3D%228f414b4f-ab39-4d36-bedb-2ad69da9c830%22&load=author%3D_ownerId%3Ausers
