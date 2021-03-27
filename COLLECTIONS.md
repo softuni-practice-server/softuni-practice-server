@@ -37,17 +37,17 @@ An end point is revealed at `/data`, which grants access to information, stored 
 **By default, the service will only return the first 10 entries in a collection.** Use pagination options, as described in the section [Advanced Retrieval - Pagination](#pagination).
 
 ### Create
-*This request requires authorization headers (see above).*
+*This request requires authorization and content-type headers (see above).*
 
 Send `POST` request to `/data/:collection` to create new entry. ID will be generated automatically and will be included in the returned object. If the collection does not exist, it will be created.
 
 ### Update
-*This request requires authorization headers (see above). Only the owner of the resource can edit it.*
+*This request requires authorization and content-type headers (see above). Only the owner of the resource can edit it.*
 
 Send `PUT` request to `/data/:collection/:id` to update a single entry. Note that the existing entry will be replaced!
 
 ### Partial Update
-*This request requires authorization headers (see above). Only the owner of the resource can edit it.*
+*This request requires authorization and content-type headers (see above). Only the owner of the resource can edit it.*
 
 Send `PATCH` request to `/data/:collection/:id` to partially update a single entry. The existing entry will be merged with the new data. System properties will **not** be affected.
 
