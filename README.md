@@ -1,4 +1,12 @@
-# softuni-practice-server
+# SoftUni Practice Server
+
+| Contents
+|---
+| [Usage](#usage)
+| [Services](#services)
+| - [JSON Store](#json-store)
+| - [Authentication](#authentication)
+| - [Collections](#collections)
 
 ## Usage
 
