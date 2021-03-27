@@ -61,6 +61,18 @@ Update entry with ID **"asdf-1234"** in the `books` collection:
 - **Headers:** `Content-Type: application/json`
 - **Body:** *JSON-formatted data*
 
+##### Partial Update
+
+Send a `PATCH` request to the endpoint, appending the Id or any appropriate property name. The service will perform a **shallow merge** with the new data! The service will respond with the updated object.
+
+**Examples**
+
+Partially update entry with ID **"asdf-1234"** in the `books` collection:
+- **Method:** `PATCH`
+- **Endpont:** `/jsonstore/books/asdf-1234`
+- **Headers:** `Content-Type: application/json`
+- **Body:** *JSON-formatted data*
+
 ##### Delete
 
 Send a `DELETE` request to the endpoint, appending the Id or any appropriate property name. The service will respond with the deleted object.
@@ -115,6 +127,11 @@ Send `POST` request to `/data/:collection` to create new entry. ID will be gener
 *This request requires authorization headers (see above). Only the owner of the resource can edit it.*
 
 Send `PUT` request to `/data/:collection/:id` to update a single entry. Note that the existing entry will be replaced!
+
+##### Partial update
+*This request requires authorization headers (see above). Only the owner of the resource can edit it.*
+
+Send `PATCH` request to `/data/:collection/:id` to partially update a single entry. The existing entry will be merged with the new data. System properties will **not** be affected.
 
 ##### Delete
 *This request requires authorization headers (see above). Only the owner of the resource can delete it.*

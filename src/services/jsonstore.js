@@ -3,7 +3,7 @@ const Service = require('./Service');
 const uuid = require('../common/util').uuid;
 
 
-const data = fs.readdirSync('./data').reduce((p, c) => {
+const data = fs.existsSync('./data') ? fs.readdirSync('./data').reduce((p, c) => {
     const content = JSON.parse(fs.readFileSync('./data/' + c));
     const collection = c.slice(0, -5);
     p[collection] = {};
@@ -11,7 +11,7 @@ const data = fs.readdirSync('./data').reduce((p, c) => {
         p[collection][endpoint] = content[endpoint];
     }
     return p;
-}, {});
+}, {}) : {};
 
 const actions = {
     get: (context, tokens, query, body) => {
@@ -42,6 +42,21 @@ const actions = {
         return responseData[newId];
     },
     put: (context, tokens, query, body) => {
+        tokens = [context.params.collection, ...tokens];
+        console.log('Request body:\n', body);
+
+        let responseData = data;
+        for (let token of tokens.slice(0, -1)) {
+            if (responseData !== undefined) {
+                responseData = responseData[token];
+            }
+        }
+        if (responseData !== undefined && responseData[tokens.slice(-1)] !== undefined) {
+            responseData[tokens.slice(-1)] = body;
+        }
+        return responseData[tokens.slice(-1)];
+    },
+    patch: (context, tokens, query, body) => {
         tokens = [context.params.collection, ...tokens];
         console.log('Request body:\n', body);
 
@@ -80,6 +95,7 @@ const dataService = new Service();
 dataService.get(':collection', actions.get);
 dataService.post(':collection', actions.post);
 dataService.put(':collection', actions.put);
+dataService.patch(':collection', actions.patch);
 dataService.delete(':collection', actions.delete);
 
 

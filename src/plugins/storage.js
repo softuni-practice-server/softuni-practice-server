@@ -89,13 +89,36 @@ function createInstance(seedData = {}) {
     }
 
     /**
-     * Update entry by ID
+     * Replace entry by ID
+     * @param {string} collection Name of collection to access. Throws error if not found.
+     * @param {number|string} id ID of entry to update. Throws error if not found.
+     * @param {Object} data Value to store. Record will be replaced!
+     * @return {Object} Updated entry.
+     */
+    function set(collection, id, data) {
+        if (!collections.has(collection)) {
+            throw new ReferenceError('Collection does not exist: ' + collection);
+        }
+        const targetCollection = collections.get(collection);
+        if (!targetCollection.has(id)) {
+            throw new ReferenceError('Entry does not exist: ' + id);
+        }
+
+        const existing = targetCollection.get(id);
+        const record = assignSystemProps(deepCopy(data), existing);
+        record._updatedOn = Date.now();
+        targetCollection.set(id, record);
+        return Object.assign(deepCopy(record), { _id: id });
+    }
+
+    /**
+     * Modify entry by ID
      * @param {string} collection Name of collection to access. Throws error if not found.
      * @param {number|string} id ID of entry to update. Throws error if not found.
      * @param {Object} data Value to store. Shallow merge will be performed!
      * @return {Object} Updated entry.
      */
-    function set(collection, id, data) {
+     function merge(collection, id, data) {
         if (!collections.has(collection)) {
             throw new ReferenceError('Collection does not exist: ' + collection);
         }
@@ -169,7 +192,27 @@ function createInstance(seedData = {}) {
         return result;
     }
 
-    return { get, add, set, delete: del, query };
+    return { get, add, set, merge, delete: del, query };
+}
+
+
+function assignSystemProps(target, entry, ...rest) {
+    const whitelist = [
+        '_id',
+        '_createdOn',
+        '_updatedOn',
+        '_ownerId'
+    ];
+    for (let prop of whitelist) {
+        if (entry.hasOwnProperty(prop)) {
+            target[prop] = deepCopy(entry[prop]);
+        }
+    }
+    if (rest.length > 0) {
+        Object.assign(target, ...rest);
+    }
+
+    return target;
 }
 
 

@@ -5,6 +5,7 @@ module.exports = {
     get,
     post,
     put,
+    patch,
     delete: del
 };
 
@@ -209,6 +210,34 @@ function put(context, tokens, query, body) {
 
     try {
         responseData = context.storage.set(context.params.collection, tokens[0], body);
+    } catch (err) {
+        throw new RequestError();
+    }
+
+    return responseData;
+}
+
+function patch(context, tokens, query, body) {
+    console.log('Request body:\n', body);
+
+    validateRequest(context, tokens, query);
+    if (tokens.length != 1) {
+        throw new RequestError('Missing entry ID');
+    }
+
+    let responseData;
+    let existing;
+
+    try {
+        existing = context.storage.get(context.params.collection, tokens[0]);
+    } catch (err) {
+        throw new NotFoundError();
+    }
+
+    context.canAccess(existing, body);
+
+    try {
+        responseData = context.storage.merge(context.params.collection, tokens[0], body);
     } catch (err) {
         throw new RequestError();
     }

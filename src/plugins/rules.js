@@ -8,6 +8,7 @@ function initPlugin(settings) {
         'GET': '.read',
         'POST': '.create',
         'PUT': '.update',
+        'PATCH': '.update',
         'DELETE': '.delete'
     };
     const rules = Object.assign({
@@ -30,6 +31,7 @@ function initPlugin(settings) {
             get,
             isOwner
         };
+        const isAdmin = request.headers.hasOwnProperty('x-admin');
 
         context.canAccess = canAccess;
 
@@ -43,7 +45,7 @@ function initPlugin(settings) {
             } else if (typeof rule == 'string') {
                 rule = !!(eval(rule));
             }
-            if (!rule) {
+            if (!rule && !isAdmin) {
                 throw new CredentialError();
             }
             propRules.map(r => applyPropRule(action, r, user, data, newData));
@@ -67,11 +69,11 @@ function initPlugin(settings) {
         function checkRoles(roles, data, newData) {
             if (roles.includes('Guest')) {
                 return true;
-            } else if (!context.user) {
+            } else if (!context.user && !isAdmin) {
                 throw new AuthorizationError();
             } else if (roles.includes('User')) {
                 return true;
-            } else if (roles.includes('Owner')) {
+            } else if (context.user && roles.includes('Owner')) {
                 return context.user._id == data._ownerId;
             } else {
                 return false;

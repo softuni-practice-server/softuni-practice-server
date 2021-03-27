@@ -10,7 +10,7 @@ class Service {
      * @param {{method: string, tokens: string[], query: *, body: *}} request Request parameters
      */
     async parseRequest(context, request) {
-        for (let {method, name, handler} of this._actions) {
+        for (let { method, name, handler } of this._actions) {
             if (method === request.method && matchAndAssignParams(context, request.tokens[0], name)) {
                 return await handler(context, request.tokens.slice(1), request.query, request.body);
             }
@@ -24,7 +24,7 @@ class Service {
      * @param {(context, tokens: string[], query: *, body: *)} handler Request handler
      */
     registerAction(method, name, handler) {
-        this._actions.push({method, name, handler});
+        this._actions.push({ method, name, handler });
     }
 
     /**
@@ -52,6 +52,15 @@ class Service {
      */
     put(name, handler) {
         this.registerAction('PUT', name, handler);
+    }
+
+    /**
+     * Register PATCH action
+     * @param {string} name Action name. Can be a glob pattern.
+     * @param {(context, tokens: string[], query: *, body: *)} handler Request handler
+     */
+    patch(name, handler) {
+        this.registerAction('PATCH', name, handler);
     }
 
     /**
