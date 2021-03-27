@@ -3,13 +3,13 @@ Detailed information on the usage of the JSON Store REST service.
 
 | Contents
 | ---
-| [Configuration]
-| [CRUD Operations]
-| * [Read]
-| * [Create]
-| * [Update]
-| * [Partial Update]
-| * [Delete]
+| [Configuration](#configuration)
+| [CRUD Operations](#crud-operations)
+| - [Read](#read)
+| - [Create](#create)
+| - [Update](#update)
+| - [Partial Update](#partial-update)
+| - [Delete](#delete)
 
 ## Configuration
 *This service does NOT use authentication - everything is fully accessible without any credentials.*
