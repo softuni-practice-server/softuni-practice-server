@@ -1,6 +1,6 @@
 # Collections
 
-Detailed informatio on the usage of the Collections REST service.
+Detailed information on the usage of the Collections REST service.
 
 This service uses authentication - reading resources is public, but creating, updating and deleting can only be performed by authorized users. Additionally, only the original creator of a resource can edit or delete it (barring any special CLP or ACL rules for the record).
 

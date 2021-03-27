@@ -1,5 +1,15 @@
 # JSON Store
-Detailed informatio on the usage of the JSON Store REST service.
+Detailed information on the usage of the JSON Store REST service.
+
+| Contents
+| ---
+| [Configuration]
+| [CRUD Operations]
+| * [Read]
+| * [Create]
+| * [Update]
+| * [Partial Update]
+| * [Delete]
 
 ## Configuration
 *This service does NOT use authentication - everything is fully accessible without any credentials.*
@@ -52,7 +62,7 @@ Update entry with ID **"asdf-1234"** in the `books` collection:
 
 ### Partial Update
 
-Send a `PATCH` request to the endpoint, appending the Id or any appropriate property name. The service will perform a **shallow merge** with the new data! The service will respond with the updated object.
+Send a `PATCH` request to the endpoint, appending the Id or any appropriate property name. The service will perform a **shallow merge** with the new data and respond with the updated object.
 
 **Examples**
 
