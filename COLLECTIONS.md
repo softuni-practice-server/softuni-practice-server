@@ -34,7 +34,7 @@ An end point is revealed at `/data`, which grants access to information, stored 
 - `GET /data/:collection` - array of all entries in target collection; will return 404 if collection does not exist
 - `GET /data/:collection/:id` - entry matching the given ID; will return 404 if collection or entry do not exist with appropriate message attached to response
 
-**By default, the service will only return the first 10 entries in a collection.** Use pagination options, as described in the section [Advanced Retrieval](Advanced Retrieval).
+**By default, the service will only return the first 10 entries in a collection.** Use pagination options, as described in the section [Advanced Retrieval](#advanced-retrieval).
 
 ### Create
 *This request requires authorization headers (see above).*
