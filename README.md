@@ -10,7 +10,7 @@
 
 ## Usage
 
-This is **REST service**, created for educational purposes. A compiled bundle should be available with every exercise's resources. To execute it, run the included **start.bat** file, or manually open a command prompt and run `node server.js`.
+This is a **REST service**, created for educational purposes. A compiled bundle should be available with every exercise's resources. To execute it, run the included **start.bat** file, or manually open a command prompt and run `node server.js`.
 
 **Note:** You **do NOT need** to download anything from this repository - this is intended for reference only.
 
@@ -24,7 +24,7 @@ Note that changes to the data **will not be persisted**! All operations happen i
 |---
 
 #### Configuration
-*This service does NOT use authentication - everything is fully accessible without any credentials.*
+*The JSON Store service does NOT use authentication - everything is fully accessible without any credentials. Use the Collections service if you need authentication.*
 
 This service dynamically loads collections from the `./data/` folder, located with the server. Any JSON file in this folder will be accessible via requests.
 
