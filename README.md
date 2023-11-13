@@ -3,6 +3,7 @@
 | Contents
 |---
 | [Usage](#usage)
+| [Build](#build)
 | [Services](#services)
 | - [JSON Store](#json-store)
 | - [Authentication](#authentication)
@@ -13,6 +14,17 @@
 This is a **REST service**, created for educational purposes. A compiled bundle should be available with every exercise's resources. To execute it, run the included **start.bat** file, or manually open a command prompt and run `node server.js`.
 
 **Note:** You **do NOT need** to download anything from this repository - this is intended for reference only.
+
+## Build
+
+To build the server, run the following commands in the terminal:
+```
+npm install
+npm run client
+npm run build
+```
+
+This will compile the admin panel and then bundle the client, the server and the settings file (this contains all rules and seed data for the Collections service) into a single executable script.
 
 ## Services
 
