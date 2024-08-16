@@ -108,7 +108,8 @@ async function parseRequest(req) {
         .split('&')
         .filter(s => s != '')
         .map(x => x.split('='))
-        .reduce((p, [k, v]) => Object.assign(p, { [k]: decodeURIComponent(v) }), {});
+        .reduce((p, [k, v]) => Object.assign(p, { [k]: decodeURIComponent(v.replace(/\+/g, " ")) }), {});
+
     const body = await parseBody(req);
 
     return {
