@@ -70,7 +70,7 @@ X-Authorization: {token}
 ```
 
 #### Admin Override
-Any request which includes the `X-Admin` header will be **granted full access** to any resource inside the **Collections** service. The only exception is if the request has an invalid session token, which still throws a 403 with the appropriate message.
+Any request which includes the `X-Admin` header will be **granted full access** to any resource inside the **Collections** service. The only exception is if the request has an invalid session token, which still throws a 403 with the appropriate message. **Note** : You can use X-Admin header when create a new entry, but you must put for value any user email from users list.
 
 ### Collections
 

