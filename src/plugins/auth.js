@@ -12,22 +12,29 @@ function initPlugin(settings) {
         };
 
         const userToken = request.headers['x-authorization'];
-        if (userToken !== undefined) {
-            let user;
-            const session = findSessionByToken(userToken);
-            if (session !== undefined) {
-                const userData = context.protectedStorage.get('users', session.userId);
-                if (userData !== undefined) {
-                    console.log('Authorized as ' + userData[identity]);
-                    user = userData;
-                }
-            }
-            if (user !== undefined) {
-                context.user = user;
-            } else {
-                throw new CredentialError('Invalid access token');
-            }
-        }
+		const userAdmin = request.headers['x-admin'];
+		if (userToken !== undefined) {
+			let user;
+			const session = findSessionByToken(userToken);
+			if (session !== undefined) {
+				const userData = context.protectedStorage.get('users', session.userId);
+				if (userData !== undefined) {
+					console.log('Authorized as ' + userData[identity]);
+					user = userData;
+				}
+			}
+			if (user !== undefined) {
+				context.user = user;
+			} else {
+				throw new CredentialError$1('Invalid access token');
+			}
+		} else if (userAdmin !== undefined) {
+			const targetUser = context.protectedStorage.query('users', { 'email': userAdmin });
+			if (targetUser.length == 1) {
+				console.log('Authorized as ' + userAdmin);
+				context.user = targetUser[0];
+			}				
+		}
 
         function register(body) {
             if (body.hasOwnProperty(identity) === false ||
