@@ -45,18 +45,18 @@ Sorting works with both numeric and string fields:
 Examples
 - Sort phonebook by person in ascending order:
 
-Method: GET
-Endpoint: `/jsonstore/phonebook?sortBy=person`
+- **Method:** `GET`
+- **Endpont:** `/jsonstore/phonebook?sortBy=person`
 
 Sort games by _createdOn in descending order:
 
-Method: GET
-Endpoint: `jsonstore/games?sortBy=_createdOn%20desc`
+- **Method:** `GET`
+- **Endpont:** `jsonstore/games?sortBy=_createdOn%20desc`
 
 Sort books by author name:
 
-Method: GET
-Endpoint: `/jsonstore/books?sortBy=author`
+- **Method:** `GET`
+- **Endpont:** `/jsonstore/books?sortBy=author`
 
 
 ### Create
