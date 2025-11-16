@@ -35,6 +35,29 @@ Retrieve entry with ID **"asdf-1234"** from the `books` collection:
 - **Method:** `GET`
 - **Endpont:** `/jsonstore/books/asdf-1234`
 
+Sorting
+- You can sort the results by adding a sortBy query parameter. The format is sortBy=field for ascending order or sortBy=field%20desc for descending order.
+
+Sorting works with both numeric and string fields:
+- Numeric fields are sorted mathematically (1, 2, 10, 20...)
+- String fields are sorted alphabetically using locale-aware comparison
+
+Examples
+- Sort phonebook by person in ascending order:
+
+Method: GET
+Endpoint: `/jsonstore/phonebook?sortBy=person`
+
+Sort games by _createdOn in descending order:
+
+Method: GET
+Endpoint: `jsonstore/games?sortBy=_createdOn%20desc`
+
+Sort books by author name:
+
+Method: GET
+Endpoint: `/jsonstore/books?sortBy=author`
+
 
 ### Create
 
