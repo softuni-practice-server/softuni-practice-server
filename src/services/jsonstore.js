@@ -22,6 +22,32 @@ const actions = {
                 responseData = responseData[token];
             }
         }
+        
+        if (query.sortBy && responseData && typeof responseData === 'object') {
+            const [field, direction] = query.sortBy.split(' ');
+            const desc = direction === 'desc';
+
+            const entries = Object.entries(responseData);
+
+            entries.sort(([idA, a], [idB, b]) => {
+                const valA = a[field];
+                const valB = b[field];
+
+                if (typeof valA === 'number' && typeof valB === 'number') {
+                    return (valA - valB) * (desc ? -1 : 1);
+                } else {
+                    return String(valA).localeCompare(String(valB)) * (desc ? -1 : 1);
+                }
+            });
+            
+            const sortedObject = {};
+            for (const [id, obj] of entries) {
+                sortedObject[id] = obj;
+            }
+
+            return sortedObject;
+        }
+
         return responseData;
     },
     post: (context, tokens, query, body) => {
