@@ -28,12 +28,12 @@ Send a `GET` request to the endpoint. The response will be in JSON format.
 
 Retrieve everything inside the `books` collection:
 - **Method:** `GET`
-- **Endpont:** `/jsonstore/books`
+- **Endpoint:** `/jsonstore/books`
 
 
 Retrieve entry with ID **"asdf-1234"** from the `books` collection:
 - **Method:** `GET`
-- **Endpont:** `/jsonstore/books/asdf-1234`
+- **Endpoint:** `/jsonstore/books/asdf-1234`
 
 **Sorting**
 
@@ -79,7 +79,7 @@ Send a `POST` request to the endpoint. The shape of the body is not restricted. 
 
 Create a new entry inside the `books` collection:
 - **Method:** `POST`
-- **Endpont:** `/jsonstore/books`
+- **Endpoint:** `/jsonstore/books`
 - **Headers:** `Content-Type: application/json`
 - **Body:** *JSON-formatted data*
 
@@ -91,7 +91,7 @@ Send a `PUT` request to the endpoint, appending the Id or any appropriate proper
 
 Update entry with ID **"asdf-1234"** in the `books` collection:
 - **Method:** `PUT`
-- **Endpont:** `/jsonstore/books/asdf-1234`
+- **Endpoint:** `/jsonstore/books/asdf-1234`
 - **Headers:** `Content-Type: application/json`
 - **Body:** *JSON-formatted data*
 
@@ -103,7 +103,7 @@ Send a `PATCH` request to the endpoint, appending the Id or any appropriate prop
 
 Partially update entry with ID **"asdf-1234"** in the `books` collection:
 - **Method:** `PATCH`
-- **Endpont:** `/jsonstore/books/asdf-1234`
+- **Endpoint:** `/jsonstore/books/asdf-1234`
 - **Headers:** `Content-Type: application/json`
 - **Body:** *JSON-formatted data*
 
@@ -115,4 +115,4 @@ Send a `DELETE` request to the endpoint, appending the Id or any appropriate pro
 
 Delete entry with ID **"asdf-1234"** from the `books` collection:
 - **Method:** `DELETE`
-- **Endpont:** `/jsonstore/books/asdf-1234`
+- **Endpoint:** `/jsonstore/books/asdf-1234`
